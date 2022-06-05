@@ -5,7 +5,7 @@ Experimental Esoteric Programming Language that runs on microchips and forward.
 
 This language is designed for micro controllers. 
 
-- No heap allocations. All on stack. Because on embedded devices, you can not trust heap allocations. Micro-chips are not smart enough to handle memory allocations efficiently. In time, memory gets fragmanted and unreliable. Therefore, you need to preallocate the memory you need in the start-up and do not get make any new `malloc` requests. All memory is calculated and handled by the compiler on stack calculations.
+- No heap allocations. All on stack. Because on embedded devices, you can not trust heap allocations. Micro-chips are not smart enough to handle memory allocations efficiently. In time, memory gets fragmanted and unreliable. Therefore, you need to preallocate the memory you need in the start-up and do not make any new `malloc` requests. All memory is calculated and handled by the compiler on stack calculations.
 - Line by line compilation. RAM size on microchips are quite limited. Only a few kilobytes (8Kb on ATMega2560) and you can not afford to keep all source code in memory for advanced scope analysis or code hierarchy. We are compiling each line individually with a very limited scope called `subs`. And forget the line itself to free memory for the next line.
 - No variables! Allocating variables (keeping their types and address identifiers, etc) are resource heavy operations for a microchip. Especially hard when we want to avoid `malloc` operations. Instead, we have a common memory area and we operate with memory addresses. 
 - (Almost) No exception handling. Because exception handling is expensive. Instead, program just halts when things fail.
