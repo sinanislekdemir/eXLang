@@ -1,11 +1,7 @@
 #ifndef _statement_hpp
 #define _statement_hpp
 #define MAX_COMMAND_LENGTH 10
-#ifdef MICRO_DEVICE
-#define NUM_STATEMENTS 56
-#else
-#define NUM_STATEMENTS 50
-#endif
+#define NUM_STATEMENTS 60
 
 #include "constants.hpp"
 #include "program.hpp"

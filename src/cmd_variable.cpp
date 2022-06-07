@@ -22,23 +22,7 @@ int command_set(command c, program *p) {
 		read_area_str(c.variable_index[1], 0, buffer);
 		write_area(c.variable_index[0], buffer);
 		return 0;
-	}
-
-	if (c.variable_type[1] == TYPE_NUM) {
-		double val = get_double(c, 1);
-		write_area(c.variable_index[0], val);
-		return 0;
-	}
-
-	if (c.variable_type[1] == TYPE_BYTE) {
-		char val = (char)c.variable_constant[1];
-		write_area(c.variable_index[0], val);
-		return 0;
-	}
-
-	// There should be no TYPE_STR here anymore, STR type
-	// is saved during compilation
-	if (c.variable_type[1] == TYPE_STR) {
+	} else {
 		error_msg(ERR_STR_INVALID_TYPE, c.pid);
 		return -1;
 	}

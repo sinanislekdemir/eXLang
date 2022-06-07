@@ -1,0 +1,38 @@
+main:
+DATA @1 "Checking prime numbers from 3 to 10000"
+DATA @100 3
+DATA @110 2
+DATA @210 2
+DATA @130 10000
+DATA @140 0
+DATA @150 1
+SPRINTLN @1
+CALL 1
+---
+loop:
+XOR @120 @100 @110
+CMP @120 @140
+JE 2
+ADD @110 @110 @150
+CMP @110 @100
+JE 3
+GOTO 0
+---
+fail:
+ADD @100 @100 @150
+SET @110 @210
+CMP @100 @130
+JE 4
+CALL 1
+---
+success:
+SPRINTLN @100
+ADD @100 @100 @150
+SET @110 @210
+CMP @100 @130
+JE 4
+CALL 1
+---
+exit:
+HALT
+---

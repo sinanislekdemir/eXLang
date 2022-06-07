@@ -67,15 +67,10 @@
 #define STATEMENT_PINMODE 57
 #define STATEMENT_DWRITE 58
 #define STATEMENT_DREAD 59
+#define STATEMENT_DATA 60
 
-#define CONSTANT_COUNT 5
 #define LOG_SERIAL 0
 #define LOG_FILE 1
-
-#define CMP_N 0
-#define CMP_JE 1
-#define CMP_JG 2
-#define CMP_JL 3
 
 #ifdef BOARD_ESP32
 #define MAX_LINE_LENGTH 128

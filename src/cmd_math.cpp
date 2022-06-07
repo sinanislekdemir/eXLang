@@ -4,151 +4,55 @@
 #include "macros.hpp"
 #include <math.h>
 
-int _validate_command(command c) {
-	if (c.arg_count != 3) {
-		error_msg(ERR_STR_NOT_ENOUGH_PARAMS, c.pid);
-		return -1;
-	}
-	if (c.variable_type[0] != TYPE_ADDRESS) {
-		error_msg(ERR_STR_INVALID_TYPE, c.pid);
-		return -1;
-	}
-	if (c.variable_type[1] == TYPE_LABEL || c.variable_type[1] == TYPE_STR) {
-		error_msg(ERR_STR_INVALID_TYPE, c.pid);
-		return -1;
-	}
-	if (c.variable_type[2] == TYPE_LABEL || c.variable_type[2] == TYPE_STR) {
-		error_msg(ERR_STR_INVALID_TYPE, c.pid);
-		return -1;
-	}
-	return 0;
-}
-
 int command_add(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double add = v1 + v2;
-	return write_area(c.variable_index[0], add);
+	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) + read_area_double(c.variable_index[2]));
 }
 
 int command_sub(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double sub = v1 - v2;
-	return write_area(c.variable_index[0], sub);
+	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) - read_area_double(c.variable_index[2]));
 }
 
 int command_div(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-#ifndef DISABLE_EXCEPTIONS
-	if (v2 == 0) {
-		error_msg(ERR_STR_DIVISION_BY_ZERO, c.pid);
-		return -1;
-	}
-#endif
-
-	double div = v1 / v2;
-	return write_area(c.variable_index[0], div);
+	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) / read_area_double(c.variable_index[2]));
 }
 
 int command_mul(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double mul = v1 * v2;
-	return write_area(c.variable_index[0], mul);
+	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) * read_area_double(c.variable_index[2]));
 }
 
 int command_xor(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double xord = int(v1) % int(v2);
-	return write_area(c.variable_index[0], xord);
+	return write_area(c.variable_index[0],
+			  double(int(read_area_double(c.variable_index[1])) % int(read_area_double(c.variable_index[2]))));
 }
 
 int command_or(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double or_r = int(v1) | int(v2);
-	return write_area(c.variable_index[0], or_r);
+	return write_area(c.variable_index[0],
+			  double(int(read_area_double(c.variable_index[1])) | int(read_area_double(c.variable_index[2]))));
 }
 
 int command_and(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double and_r = int(v1) & int(v2);
-	return write_area(c.variable_index[0], and_r);
+	return write_area(c.variable_index[0],
+			  double(int(read_area_double(c.variable_index[1])) & int(read_area_double(c.variable_index[2]))));
 }
 
 int command_pow(command c, program *p) {
 	UNUSED(p);
-#ifndef DISABLE_EXCEPTIONS
-	if (_validate_command(c) != 0) {
-		return -1;
-	}
-#endif
 
-	double v1 = get_double(c, 1);
-	double v2 = get_double(c, 2);
-
-	double pow_r = pow(v1, v2);
-	return write_area(c.variable_index[0], pow_r);
+	return write_area(c.variable_index[0], pow(read_area_double(c.variable_index[1]), read_area_double(c.variable_index[2])));
 }
 
 int command_trigonometry(command c, program *p) {

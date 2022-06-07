@@ -2,16 +2,19 @@
 #define _program_hpp
 
 #ifndef MAX_SUB_COMMANDS
-#define MAX_SUB_COMMANDS 36  // 128 in ESP32
+#define MAX_SUB_COMMANDS 36 // 128 in ESP32
 #endif
 #ifndef MAX_SUBS
-#define MAX_SUBS 8  // 32 in ESP32
+#define MAX_SUBS 8 // 32 in ESP32
 #endif
 #ifndef PROG_SUBS
 #define PROG_SUBS 8 // 32 in ESP32
 #endif
 #ifndef MAX_PROGS
 #define MAX_PROGS 4 // 16 in ESP32
+#endif
+#ifndef MAX_ALIAS
+#define MAX_ALIAS 32
 #endif
 
 #define XSTR(x) STR(x)
@@ -44,11 +47,12 @@ class program {
 	char valid_sub_count;
 
 	short _compile_cursor;
+	int _alias_cursor;
 
 	int parse(const char *cmd, unsigned int pid, int index);
 
       public:
-	char _cmp_flag;
+	int _cmp_flag;
 	short back_sub_history[PROG_SUBS];
 	short cursor;
 	short subs[PROG_SUBS];
@@ -77,7 +81,7 @@ class program {
 	~program();
 	int step();
 	void destroy();
-	void set_cmp_flag(unsigned int flag);
+	void set_cmp_flag(int flag);
 };
 
 #endif

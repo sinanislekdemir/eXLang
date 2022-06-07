@@ -1,6 +1,7 @@
 #include "program.hpp"
 #include "helpers.hpp"
 #include "interpreter.hpp"
+#include "memory.hpp"
 #include "statement.hpp"
 
 #ifdef MICRO_DEVICE
@@ -52,6 +53,7 @@ int sub_next_command(short sub) {
 }
 
 program::program() {
+
 	for (unsigned int i = 0; i < PROG_SUBS; i++) {
 		this->back_sub_history[i] = -1;
 		this->subs[i] = -1;
@@ -111,7 +113,6 @@ void program::destroy() {
 			for (unsigned int j = 0; j < 3; j++) {
 				commands[i].variable_index[j] = 0;
 				commands[i].variable_type[j] = 0;
-				commands[i].variable_constant[j] = 0;
 			}
 			commands[i].pid = 0;
 			commands[i].statement = 0;
@@ -135,7 +136,7 @@ void program::destroy() {
 	free_program(this->pid);
 }
 
-void program::set_cmp_flag(unsigned int flag) { this->_cmp_flag = flag; }
+void program::set_cmp_flag(int flag) { this->_cmp_flag = flag; }
 
 short program::find_sub(char *name) {
 	for (unsigned int i = 0; i < PROG_SUBS; i++) {
@@ -358,25 +359,13 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 
 	char st = find_statement((const char *)temp_buffer);
 
-	if (st == STATEMENT_SET) {
+	if (st == STATEMENT_DATA) {
 		if (argument_count != 2) {
 			return -1;
 		}
-		char location[16] = {0};
-		extract(cmd, ' ', 1, location);
-		extract(cmd, ' ', 2, temp_buffer);
-		if (location[0] != '@') {
-			return -1;
-		}
-		unsigned int t = arg_type(temp_buffer);
-		if (t == TYPE_STR) {
-			char tmp[MAX_LINE_LENGTH] = {0};
-			memcpy(tmp, temp_buffer + 1, strlen(temp_buffer) - 2);
-			long l = atol(location + 1);
-			write_area((unsigned int)(l), tmp);
-			st = STATEMENT_NOOP;
-			argument_count = 0;
-		}
+		store_data(cmd);
+		st = STATEMENT_NOOP;
+		argument_count = 0;
 	}
 
 	commands[index].statement = st;
@@ -394,7 +383,7 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 		for (unsigned int j = 0; j < CONST_COUNT; j++) {
 			if (strcmp(temp_buffer, _constants[j].keyword) == 0) {
 				commands[index].variable_type[i] = TYPE_NUM;
-				commands[index].variable_constant[i] = _constants[j].val;
+				commands[index].variable_index[i] = _constants[j].val;
 				assigned = true;
 			}
 		}
@@ -404,28 +393,22 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 		unsigned int t = arg_type(temp_buffer);
 		commands[index].variable_type[i] = t;
 
-		if (t == TYPE_NUM) {
-			commands[index].variable_constant[i] = atof(temp_buffer);
-			commands[index].variable_index[i] = -1;
+		if (t == TYPE_NUM && (st == STATEMENT_JE || st == STATEMENT_JG || st == STATEMENT_JL || st == STATEMENT_JGE ||
+				      st == STATEMENT_JLE || st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL)) {
+			commands[index].variable_index[i] = atoi(temp_buffer);
+			continue;
 		}
 
-		if (t == TYPE_STR) {
-			// not allowed
-			error_msg("STR argument not allowed", 0);
+		if (t == TYPE_NUM || t == TYPE_STR || t == TYPE_BYTE) {
+			error_msg("DATA is not initialized", 0);
 			return -1;
-		}
-
-		if (t == TYPE_BYTE) {
-			char val = (char)strtol(temp_buffer, 0, 16);
-			commands[index].variable_constant[i] = double(val);
-			commands[index].variable_index[i] = -1;
 		}
 
 		if (t == TYPE_ADDRESS) {
 			unsigned short loc = atoi(temp_buffer + 1);
 			commands[index].variable_index[i] = loc; // unknown yet
-			commands[index].variable_constant[i] = 0;
 		}
+
 		if (t == TYPE_LABEL) {
 			short sub = this->find_sub(temp_buffer);
 			if (sub == -1) {

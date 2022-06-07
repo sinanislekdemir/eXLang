@@ -145,6 +145,8 @@ char find_statement(const char *cmd) {
 #endif
 	if (strcmp(cmd, "NOOP") == 0)
 		return STATEMENT_NOOP;
+	if (strcmp(cmd, "DATA") == 0)
+		return STATEMENT_DATA;
 	return 0;
 }
 
@@ -195,25 +197,26 @@ void register_statements() {
 	add_statement(STATEMENT_ALLOC, command_alloc, 34);
 	add_statement(STATEMENT_APPEND, command_append, 35);
 	add_statement(STATEMENT_SET, command_set, 36);
-	add_statement(STATEMENT_DEL, command_del, 39);
-	add_statement(STATEMENT_CPY, command_cpy, 40);
-	add_statement(STATEMENT_LROTATE, command_lrotate, 41);
-	add_statement(STATEMENT_RROTATE, command_rrotate, 42);
-	add_statement(STATEMENT_LSHIFT, command_lshift, 43);
-	add_statement(STATEMENT_RSHIFT, command_rshift, 44);
+	add_statement(STATEMENT_DEL, command_del, 37);
+	add_statement(STATEMENT_NOOP, command_noop, 38);
+	add_statement(STATEMENT_CPY, command_cpy, 39);
+	add_statement(STATEMENT_LROTATE, command_lrotate, 40);
+	add_statement(STATEMENT_RROTATE, command_rrotate, 41);
+	add_statement(STATEMENT_LSHIFT, command_lshift, 42);
+	add_statement(STATEMENT_RSHIFT, command_rshift, 43);
 
-	add_statement(STATEMENT_SLEEP, command_sleep, 45);
-	add_statement(STATEMENT_MILLIS, command_millis, 46);
-	add_statement(STATEMENT_CORE, command_core, 48);
-	add_statement(STATEMENT_SYS, command_sys, 49);
+	add_statement(STATEMENT_SLEEP, command_sleep, 44);
+	add_statement(STATEMENT_MILLIS, command_millis, 45);
+	add_statement(STATEMENT_CORE, command_core, 46);
+	add_statement(STATEMENT_SYS, command_sys, 47);
 
 #ifdef MICRO_DEVICE
-	add_statement(STATEMENT_INT, command_int, 47);
-	add_statement(STATEMENT_AREAD, command_analogread, 50);
-	add_statement(STATEMENT_AWRITE, command_analogwrite, 51);
-	add_statement(STATEMENT_PINMODE, command_pinmode, 52);
-	add_statement(STATEMENT_DWRITE, command_digitalwrite, 53);
-	add_statement(STATEMENT_DREAD, command_digitalread, 54);
+	add_statement(STATEMENT_INT, command_int, 48);
+	add_statement(STATEMENT_AREAD, command_analogread, 49);
+	add_statement(STATEMENT_AWRITE, command_analogwrite, 50);
+	add_statement(STATEMENT_PINMODE, command_pinmode, 51);
+	add_statement(STATEMENT_DWRITE, command_digitalwrite, 52);
+	add_statement(STATEMENT_DREAD, command_digitalread, 53);
 #endif
-	add_statement(STATEMENT_NOOP, command_noop, 55);
+	add_statement(STATEMENT_DATA, command_noop, 54);
 }

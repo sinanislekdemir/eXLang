@@ -13,9 +13,8 @@
 
 struct command {
 	char statement; // no need to copy the cmd
-	short variable_index[3];
+	int variable_index[3];
 	char variable_type[3];
-	double variable_constant[3];
 	short arg_count;
 	char pid;
 	bool exception;

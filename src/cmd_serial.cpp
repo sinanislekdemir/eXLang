@@ -49,90 +49,58 @@ int _serial_getline(char *result, unsigned int buffer_length) {
 int command_serial_println(command c, program *p) {
 	UNUSED(p);
 	char buffer[MAX_LINE_LENGTH] = {0};
-	if (c.variable_type[0] == TYPE_NUM) {
+
+	char type = area_type(c.variable_index[0]);
+	if (type == TYPE_NUM) {
 #ifdef MICRO_DEVICE
-		Serial.println(c.variable_constant[0]);
+		Serial.println(get_double(c, 0));
 #else
-		printf("%f\n", c.variable_constant[0]);
+		printf("%f\n", get_double(c, 0));
 #endif
-		return 0;
+	} else if (type == TYPE_BYTE) {
+#ifdef MICRO_DEVICE
+		Serial.println(int(get_byte(c, 0)));
+#else
+		printf("%d\n", int(get_byte(c, 0)));
+#endif
+	} else {
+		get_string(c, 0, buffer, 0);
+#ifdef MICRO_DEVICE
+		Serial.println(buffer);
+#else
+		printf("%s\n", buffer);
+#endif
 	}
-	if (c.variable_type[0] == TYPE_BYTE) {
-#ifdef MICRO_DEVICE
-		Serial.println(int(c.variable_constant[0]));
-#else
-		printf("%d\n", int(c.variable_constant[0]));
-#endif
-		return 0;
-	}
-	if (c.variable_type[0] == TYPE_ADDRESS) {
-		char type = area_type(c.variable_index[0]);
-		if (type == TYPE_NUM) {
-#ifdef MICRO_DEVICE
-			Serial.println(get_double(c, 0));
-#else
-			printf("%f\n", get_double(c, 0));
-#endif
-		} else if (type == TYPE_BYTE) {
-#ifdef MICRO_DEVICE
-			Serial.println(int(get_byte(c, 0)));
-#else
-			printf("%d\n", int(get_byte(c, 0)));
-#endif
-		} else {
-			get_string(c, 0, buffer, 0);
-#ifdef MICRO_DEVICE
-			Serial.println(buffer);
-#else
-			printf("%s\n", buffer);
-#endif
-		}
-	}
+
 	return 0;
 }
 
 int command_serial_print(command c, program *p) {
 	UNUSED(p);
 	char buffer[MAX_LINE_LENGTH] = {0};
-	if (c.variable_type[0] == TYPE_NUM) {
+
+	char type = area_type(c.variable_index[0]);
+	if (type == TYPE_NUM) {
 #ifdef MICRO_DEVICE
-		Serial.print(c.variable_constant[0]);
+		Serial.print(get_double(c, 0));
 #else
-		printf("%f", c.variable_constant[0]);
+		printf("%f", get_double(c, 0));
 #endif
-		return 0;
+	} else if (type == TYPE_BYTE) {
+#ifdef MICRO_DEVICE
+		Serial.print(int(get_byte(c, 0)));
+#else
+		printf("%d", int(get_byte(c, 0)));
+#endif
+	} else {
+		get_string(c, 0, buffer, 0);
+#ifdef MICRO_DEVICE
+		Serial.print(buffer);
+#else
+		printf("%s", buffer);
+#endif
 	}
-	if (c.variable_type[0] == TYPE_BYTE) {
-#ifdef MICRO_DEVICE
-		Serial.print(int(c.variable_constant[0]));
-#else
-		printf("%d", int(c.variable_constant[0]));
-#endif
-		return 0;
-	}
-	if (c.variable_type[0] == TYPE_ADDRESS) {
-		char type = area_type(c.variable_index[0]);
-		if (type == TYPE_NUM) {
-#ifdef MICRO_DEVICE
-			Serial.print(get_double(c, 0));
-#else
-			printf("%f", get_double(c, 0));
-#endif
-		} else if (type == TYPE_BYTE) {
-#ifdef MICRO_DEVICE
-			Serial.print(int(get_byte(c, 0)));
-#else
-			printf("%d", int(get_byte(c, 0)));
-#endif
-		} else {
-			get_string(c, 0, buffer, 0);
-#ifdef MICRO_DEVICE
-			Serial.print(buffer);
-#else
-			printf("%s", buffer);
-#endif
-		}
-	}
+
 	return 0;
 }
 

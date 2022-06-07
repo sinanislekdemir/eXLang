@@ -11,12 +11,45 @@
 #ifdef MICRO_DEVICE
 #include <Arduino.h>
 #else
+#include <stdlib.h>
 #include <string.h>
 #endif
 
 char _memory_area[MAX_MEM] = {0};
 _protected _protected_memory[64] = {0, 0, 0};
 char _last_err[MAX_LINE_LENGTH] = {0};
+
+int store_data(const char *cmd) {
+	char temp_buffer[MAX_LINE_LENGTH] = {0};
+	char location[16] = {0};
+
+	extract(cmd, ' ', 1, location);
+	extract(cmd, ' ', 2, temp_buffer);
+	if (location[0] != '@') {
+		return -1;
+	}
+	unsigned int t = arg_type(temp_buffer);
+	long l = atol(location + 1);
+	switch (t) {
+	case TYPE_STR: {
+		char tmp[MAX_LINE_LENGTH] = {0};
+		memcpy(tmp, temp_buffer + 1, strlen(temp_buffer) - 2);
+		write_area((unsigned int)(l), tmp);
+		break;
+	}
+	case TYPE_NUM: {
+		double x = atof(temp_buffer);
+		write_area((unsigned int)(l), x);
+		break;
+	}
+	case TYPE_BYTE: {
+		char val = (char)strtol(temp_buffer, 0, 16);
+		write_area((unsigned int)(l), val);
+		break;
+	}
+	}
+	return 0;
+}
 
 int init_mem() {
 	for (unsigned short i = 0; i < 64; i++) {
@@ -125,21 +158,18 @@ int read_area_str(unsigned int index, unsigned int size, char *back) {
 int area_type(unsigned int index) { return _memory_area[index - 1]; }
 
 double read_area_double(unsigned int index) {
-	double result;
-	memcpy(&result, _memory_area + index, sizeof(double));
-	return result;
+	double *result = (double *)(_memory_area + index);
+	return *result;
 }
 
 int read_area_int(unsigned int index) {
-	int result;
-	memcpy(&result, _memory_area + index, sizeof(int));
-	return result;
+	int *result = (int *)(_memory_area + index);
+	return *result;
 }
 
 long read_area_long(unsigned int index) {
-	long result;
-	memcpy(&result, _memory_area + index, sizeof(long));
-	return result;
+	long *result = (long *)(_memory_area + index);
+	return *result;
 }
 
 char read_area_char(unsigned int index) { return _memory_area[index]; }

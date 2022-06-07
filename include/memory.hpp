@@ -28,6 +28,7 @@ struct _protected {
 	unsigned int to;
 };
 
+int store_data(const char *cmd);
 void free_area(unsigned int index, unsigned int size);
 void free_program(char pid);
 int area_type(unsigned int index);
