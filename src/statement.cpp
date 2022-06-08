@@ -147,6 +147,10 @@ char find_statement(const char *cmd) {
 		return STATEMENT_NOOP;
 	if (strcmp(cmd, "DATA") == 0)
 		return STATEMENT_DATA;
+	if (strcmp(cmd, "RAND") == 0)
+		return STATEMENT_RAND;
+	if (strcmp(cmd, "NUM") == 0)
+		return STATEMENT_NUM;
 	return 0;
 }
 
@@ -219,4 +223,6 @@ void register_statements() {
 	add_statement(STATEMENT_DREAD, command_digitalread, 53);
 #endif
 	add_statement(STATEMENT_DATA, command_noop, 54);
+	add_statement(STATEMENT_RAND, command_rand, 55);
+	add_statement(STATEMENT_NUM, command_num, 56);
 }

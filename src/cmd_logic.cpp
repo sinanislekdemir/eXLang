@@ -38,7 +38,6 @@ int _quick_jump(command c, program *p) {
 		error_msg(ERR_STR_ADDRESS_NOT_FOUND, p->pid);
 		return -1;
 	}
-	printf("JUMP: %d \n", p->cursor);
 	p->append_to_history(p->cursor, _subs[p->subs[p->cursor]].cursor);
 	p->cursor = c.variable_index[0];
 	_subs[p->subs[p->cursor]].cursor = 0;
@@ -59,8 +58,7 @@ int command_cmp(command c, program *p) {
 		return -1;
 	}
 #endif
-	int n = memcmp(_memory_area + c.variable_index[0], _memory_area + c.variable_index[1], sizeof(double));
-	p->set_cmp_flag(n);
+	p->set_cmp_flag(read_area_double(c.variable_index[0]) - read_area_double(c.variable_index[1]));
 	return 0;
 }
 

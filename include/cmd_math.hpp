@@ -3,6 +3,8 @@
 
 #include "program.hpp"
 
+int command_num(command c, program *p);
+int command_rand(command c, program *p);
 int command_add(command c, program *p);
 int command_sub(command c, program *p);
 int command_div(command c, program *p);

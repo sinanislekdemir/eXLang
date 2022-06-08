@@ -75,7 +75,7 @@ class program {
 	unsigned long start_time;
 	unsigned long end_time;
 
-	int compile(const char *line);
+	int compile(char *line);
 	void set_pid(long pid);
 	program();
 	~program();

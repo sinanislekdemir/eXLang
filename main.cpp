@@ -6,6 +6,7 @@
 #include <string.h>
 #include <string>
 
+extern char _last_err[MAX_LINE_LENGTH];
 using namespace std;
 
 int main(int argc, char *argv[]) {
@@ -34,16 +35,24 @@ int main(int argc, char *argv[]) {
 	prog.start_time = 0;
 	prog.end_time = 0;
 	string tp;
+	int c = 0;
 	char buffer[1024];
 	while (getline(file, tp)) {
 		memset(buffer, 0, 1024);
 		strcat(buffer, tp.c_str());
-		prog.compile(buffer);
+		c = prog.compile(buffer);
+		if (c < 0) {
+			printf("ERR: [%s]\n", _last_err);
+			return c;
+		}
 	}
 	prog.status_code = PROGRAM_RUNNING;
 	int stat = PROGRAM_RUNNING;
 	while (stat == PROGRAM_RUNNING) {
 		stat = prog.step();
+	}
+	if (stat == -1) {
+		printf("ERR: [%s]\n", _last_err);
 	}
 	return 0;
 }

@@ -269,7 +269,8 @@ int program::step() {
 	return PROGRAM_RUNNING;
 }
 
-int program::compile(const char *line) {
+int program::compile(char *line) {
+	ltrim(line);
 	size_t l = strlen(line);
 	if (l < 3 || line[0] == '#') {
 		return 0;
@@ -358,6 +359,10 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 	}
 
 	char st = find_statement((const char *)temp_buffer);
+	if (st == 0) {
+		error_msg("Unknown command", pid);
+		return -1;
+	}
 
 	if (st == STATEMENT_DATA) {
 		if (argument_count != 2) {

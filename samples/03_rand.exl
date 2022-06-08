@@ -1,0 +1,45 @@
+main:
+        DATA @20 0
+        DATA @30 100
+        DATA @100 "Guess the number between 0 to 100"
+        DATA @150 "Go higher"
+        DATA @170 "Go lower"
+        DATA @190 "You won!"
+        DATA @200 ":("
+        DATA @210 "Number: "
+        DATA @220 32
+        DATA @300 0
+        DATA @310 10
+        DATA @320 1
+        RAND @10 @20 @30
+        SPRINTLN @10
+        CALL 1
+---
+loop:
+        SPRINT @210
+        SREADLN @250 @220 
+        NUM @500 @250
+        SPRINTLN @500
+        CMP @500 @10
+        JE 2
+        JG 3
+        JL 4
+        ADD @300 @300 @320
+        CMP @300 @310
+        JE 5
+        GOTO 0
+---
+win:
+SPRINTLN @190
+HALT
+---
+too_big:
+SPRINTLN @170
+---
+too_small:
+SPRINTLN @150
+---
+lost:
+SPRINTLN @200
+HALT
+---

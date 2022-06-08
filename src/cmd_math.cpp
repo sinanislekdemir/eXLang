@@ -3,6 +3,33 @@
 #include "helpers.hpp"
 #include "macros.hpp"
 #include <math.h>
+#ifdef MICRO_DEVICE
+#include <Arduino.h>
+#else
+#include <stdio.h>
+#include <stdlib.h>
+#endif
+
+int command_num(command c, program *p) {
+	UNUSED(p);
+	char str[MAX_LINE_LENGTH];
+	read_area_str(c.variable_index[1], MAX_LINE_LENGTH, str);
+	return write_area(c.variable_index[0], atof(str));
+}
+
+int command_rand(command c, program *p) {
+	UNUSED(p);
+	// RAND @target @from @to
+	int from = int(read_area_double(c.variable_index[1]));
+	int to = int(read_area_double(c.variable_index[2]));
+#ifdef MICRO_DEVICE
+	double rn = double(random(from, to));
+#else
+	to += from;
+	double rn = double(random() % to);
+#endif
+	return write_area(c.variable_index[0], rn);
+}
 
 int command_add(command c, program *p) {
 	UNUSED(p);
