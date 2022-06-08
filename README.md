@@ -55,5 +55,5 @@ python 02_prime.py  169.26s user 43.72s system 100% cpu 3:32.47 total
 You will need meson and ninja to build exLang.
 
 ```
-meson build && cd build && ninja
+meson build --buildtype=release && cd build && ninja
 ```
