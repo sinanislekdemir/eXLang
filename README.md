@@ -22,7 +22,7 @@ The code is a mess. I didn't spend any time for a better code quality. I just wa
 I originally designed this language for my Arduino Mega 2560 and ESP32 operating system "minik". 
 But I wanted to see it in action on my Intel Based laptop.
 
-## Interesting note
+## Interesting note (Benchmark)
 
 In Fibonacci Sequence, exLang is 37 times faster than Python. But it's not Python to blame, Python comes with so many modern features. eXLang is a very stupid language.
 
@@ -36,6 +36,18 @@ python 3.10
 ```
 ( for i in {1..20}; do; python 01_fibonacci.py > /dev/null; done; )
 0.98s user 0.38s system 107% cpu 1.260 total
+```
+
+In prime number calculations:
+
+exlang
+```
+./exlang 02_prime.exl  55.52s user 0.01s system 99% cpu 55.534 total
+```
+
+python
+```
+python 02_prime.py  169.26s user 43.72s system 100% cpu 3:32.47 total
 ```
 
 ## Building
