@@ -1,0 +1,476 @@
+                      *** Yes good old text files ***
+                      -------------------------------
+
+-------------------------------------------------------------------------------
+Created by: Sinan Islekdemir
+            sinan@islekdemir.com
+            2022
+
+-------------------------------------------------------------------------------
+
+Programming with eXLang.
+
+exLang resembles Assemly language to a degree. Unlike usual programming
+languages, we do not have any variables. Instead, we have a shared memory
+location which we control byte by byte.
+
+-------------------------------------------------------------------------------
+
+Syntax:
+
+section:   <--- SECTION NAME
+<Statement> <Arg1> <Arg2> <Arg3>
+<Statement> <Arg1> <Arg2> <Arg3>
+---        <--- SECTION END MARKER. ALL SECTIONS MUST END WITH THIS!
+
+To make it easier for eyes, you can use indents as:
+
+section:
+    <STATEMENT> <ARG1> <ARG2>
+    <STATEMENT> <ARG1> <ARG2>
+---
+
+-------------------------------------------------------------------------------
+
+         !!!! MAIN ENTRY POINT FOR A CODE IS THE "main:" SECTION.!!!!
+         Your code must include main: to run.
+
+         Example:
+         main:
+         DATA @10 "hi!"
+         SPRINTLN @10
+         HALT
+         ---
+
+         ADDRESSES ARE DEFINED BY @<INT> NOTATION.
+         Ex: @100 points to 100th byte.
+
+-------------------------------------------------------------------------------
+
+                   List of registered standard statements.
+                   ***************************************
+
+    DATA:     Used to store constants in memory area.
+              Expects 2 Arguments.
+              DATA <ADDRESS> <DATA>
+
+              Example:
+              DATA @100 "Hello world"
+
+              Stores "Hello world" starting from byte 100 in memory.
+              Additionally, byte 99 is used for marking the following
+              memory area type as string.
+
+              Therefore, it's better to keep the previous byte free.
+
+              -----------------------------------------------------------------
+
+    SET:      Used to copy a variable from one position to another.
+              Expectes 2 Arguments
+              SET <TARGET> <SOURCE>
+
+              Example:
+              DATA @100 "Hello world"
+              SET @200 @100
+              SPRINTLN @200
+
+              Output:
+              Hello world
+              -----------------------------------------------------------------
+
+    SPRINT:   Used to write data to standard output. Serial port in
+              embbedded devices. STDOUT for PC.
+              Expects 1 Argument
+              SPRINT <SOURCE>
+
+              Example:
+              DATA @100 "Hello world"
+              DATA @150 23
+              SPRINT @100
+              SPRINT @150
+
+              Output:
+              Hello world23
+
+              NOTE: SPRINT identifies variable type by the preceeding byte.
+                    If it fails to find a proper type definition in the
+                    preceeding byte, String is assumed.
+              -----------------------------------------------------------------
+
+    SPRINTLN: Same as SPRINT but adds an additional '\n' in the output.
+              Expects 1 Argument
+              SPRINTLN <SOURCE>
+
+              Example:
+              DATA @100 "Hello world"
+              DATA @150 23
+              SPRINTLN @100
+              SPRINTLN @150
+
+              Output:
+              Hello world
+              23
+              -----------------------------------------------------------------
+
+    SREADLN:  Read a line from the starndard input. Serial port in embedded
+              devices.
+              Expects 1 or 2 Arguments. SIZE is optional. Defaults to MAX LINE
+                                                                        LENGTH
+              SREADLN <TARGET> (<SIZE>)
+
+              STDIN for PC.
+
+              Example:
+
+              SREADLN @100 
+              -----------------------------------------------------------------
+
+    GOTO:     Jumps to given index in the active section.
+              Comments are not counted.
+              Does not include "@" in the syntax as it jumps to a code location
+              Not to a memory.
+              Expects 1 Argument.
+
+              GOTO <LINE>
+
+              Example:
+
+              main:
+              # Set a counter
+              DATA @10 0
+              SPRINTLN @10
+              INC @10
+              # Going for an infinite loop.
+              GOTO 1
+              ---
+
+              Output:
+              0
+              1
+              2
+              3
+              4
+              ...
+              -----------------------------------------------------------------
+
+    CALL:     Jumps to given section and line.
+              Expects 1 or 2 Arguments. LINE is optional. Defaults to 0
+              If section is defined before, you can call it by name.
+              If it is not defined yet, you can call it by it's index.
+
+              Execution returns back to caller after CALLed section ends.
+
+              CALL <SECTION> (<LINE>)
+
+              Example:
+              print_number:
+              SPRINT @100
+              SPRINTLN @10
+              ---
+              main:
+              DATA @10 0
+              DATA @100 "Counter at: "
+              CALL print_number
+              INC @10
+              GOTO 2
+              ---
+
+              Output:
+              Counter at: 1.000000
+              Counter at: 2.000000
+              ...
+
+
+              Example:
+              main:
+              DATA @10 0
+              DATA @100 "Counter at: "
+              # print_number is not defined yet.
+              # we have to call it by it's index, starting
+              # from 0.
+              CALL 1
+              INC @10
+              GOTO 2
+              ---
+              print_number:
+              SPRINT @100
+              SPRINTLN @10
+              ---
+              -----------------------------------------------------------------
+
+    HALT:     Halts the execution. So execution will not return back to caller.
+              Program will end.
+              No arguments.
+
+              Example:
+              main:
+              HALT
+              ---
+              -----------------------------------------------------------------
+
+    CMP:      Compare two numbers.
+              eXLang does not include a string aware comparieson (yet).
+              Expectse 2 Arguments. Writes result to a hidden comparison
+              register.
+
+              Result is used for Jump statements afterwards.
+
+              CMP <ADDRESS ONE> <ADDRESS TWO>
+
+              Example:
+              exit:
+              DATA @100 "Bye!"
+              SPRINTLN @100
+              HALT
+              ---
+              main:
+              DATA @10 0
+              # target number
+              DATA @20 10
+              SPRINTLN @10
+              INC @10
+              CMP @10 @20
+              JE exit
+              GOTO 2
+              ---
+
+              Output:
+              0.000000
+              1.000000
+              2.000000
+              3.000000
+              4.000000
+              5.000000
+              6.000000
+              7.000000
+              8.000000
+              9.000000
+              Bye!
+              -----------------------------------------------------------------
+
+    JE:       Jump to given section if comparison flag is EQUALS.
+              Expects 1 argument.
+              SECTION an be pre-defined name or index.
+
+              JE <SECTION>
+
+              Example: See CMP
+
+              -----------------------------------------------------------------
+
+    JNE:      Jump to given section if comparison flag is NOT EQUALS
+
+              -----------------------------------------------------------------
+
+    JG:       Jump to given section if A > B
+              Expects 1 argument
+
+              Example:
+              exit:
+              DATA @100 "Bye!"
+              SPRINTLN @100
+              HALT
+              ---
+              main:
+              DATA @10 0
+              DATA @20 10
+              SPRINTLN @10
+              INC @10
+              CMP @10 @20
+              JG exit
+              GOTO 2
+              ---
+
+              Output:
+              0.000000
+              1.000000
+              2.000000
+              3.000000
+              4.000000
+              5.000000
+              6.000000
+              7.000000
+              8.000000
+              9.000000
+              10.000000
+              Bye!
+              -----------------------------------------------------------------
+
+    JGE:      Jump to given section if A >= B
+              -----------------------------------------------------------------
+
+    JL:       Jump to given section if A < B
+              -----------------------------------------------------------------
+
+    JLE:      Jump to given section if A <= B
+              -----------------------------------------------------------------
+
+    ADD:      Adds two numbers.
+              Expects 3 Arguments.
+              ADD <TARGET> <A> <B>
+
+              Example:
+              main:
+              DATA @10 5
+              DATA @20 9
+              ADD @30 @10 @20
+              SPRINTLN @30
+              ---
+
+              Output:
+              14
+
+              -----------------------------------------------------------------
+
+    SUB:      Substracts two numbers.
+              Expects 3 arguments.
+              SUB <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    DIV       Divide two numbers.
+              Expects 3 Arguments
+              SUB <TARGET> <A> <B>
+
+              NOTE: DOES NOT INCLUDE DIVISION BY ZERO GUARD. WATCH OUT FOR THAT
+              -----------------------------------------------------------------
+
+    MUL:      Multiply two given numbers.
+              Expectes 3 Arguments
+              MUL <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    XOR:      eXclusive OR
+              Expects 3 Arguments
+              XOR <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    OR:       Or statement
+              Expects 3 Arguments
+              OR <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    AND:      And statement
+              Expects 3 Arguments
+              AND <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    POW:      Power operator. (A ** B)
+              Expectes 3 Arguments
+              POW <TARGET> <A> <B>
+              -----------------------------------------------------------------
+
+    SIN:      Calculate Sin of the given number.
+              Expects 2 Arguments
+              SIN <TARGET> <A>
+
+              Angles in RADIANS.
+
+              Example:
+              main:
+              DATA @10 0.523598776
+              SIN @20 @10
+              SPRINTLN @20
+              ---
+
+              Output:
+              0.500000
+
+              NOTE: You can use CONSTANTS for converting between degrees and
+                    radians.
+
+              Example:
+              main:
+              DATA @10 30
+              MUL @10 DEG_TO_RAD @10
+              SIN @20 @10
+              SPRINTLN @20
+              HALT
+              ---
+
+              Output:
+              0.500000
+
+              -----------------------------------------------------------------
+
+    COS:      Calculate Cosine of the given number.
+
+              -----------------------------------------------------------------
+
+    TAN:      Calculates the tangent of the given number.
+
+              -----------------------------------------------------------------
+
+    COT:      Calculates the cotangent of the given number.
+
+              -----------------------------------------------------------------
+
+    SINH:     Calculates the hyperbolic sine of the given number.
+
+              -----------------------------------------------------------------
+
+    COSH:     Calculates the hyperbolic cosine of the given number.
+
+              -----------------------------------------------------------------
+
+    TANH:     Hy. Tangent.
+
+              -----------------------------------------------------------------
+
+    COTH:     Hy. Cotangent.
+
+              -----------------------------------------------------------------
+
+    ASIN:     Arc Sine
+
+              -----------------------------------------------------------------
+
+    ACOS:     Arc Cosine
+
+              -----------------------------------------------------------------
+
+    ATAN:     Arc Tangent
+
+              -----------------------------------------------------------------
+
+    ACOT:     Arc Cotangent
+
+              -----------------------------------------------------------------
+
+    ALLOC:    Allocate free space for string variable.
+              Expects 2 Arguments.
+
+              ALLOC <TARGET> <SIZE>
+
+              Example:
+              main:
+              DATA @10 128
+              ALLOC @100 @10
+              HALT
+              ---
+
+              -----------------------------------------------------------------
+
+    DEL:      Clear the given memory area.
+              Expects 2 Arguments
+
+              DEL <TARGET> <SIZE>
+
+              Example:
+              main:
+              DATA @10 "Hello world"
+              DATA @50 128
+              DEL @10 @50
+              SPRINTLN @10
+              HALT
+              ---
+
+              Output:
+              <nothing>
+
+              -----------------------------------------------------------------
+
+    CPY:      Copy data from a location to another.
+              Expects 3 arguments
+
+              CPY <TARGET> <SOURCE> <SIZE>
+

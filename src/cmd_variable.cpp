@@ -2,6 +2,35 @@
 #include "helpers.hpp"
 #include "macros.hpp"
 
+#ifdef MICRO_DEVICE
+#include <Arduino.h>
+#else
+#include <stdio.h>
+#include <string.h>
+#endif
+
+extern char _memory_area[MAX_MEM];
+
+int command_location(command c, program *p) {
+	double pos = read_area_double(c.variable_index[0]);
+	p->location = (unsigned int)(pos);
+	return 0;
+}
+
+int command_pull(command c, program *p) {
+	int target = c.variable_index[0];
+	int size = int(read_area_double(c.variable_index[1]));
+	memcpy(_memory_area + target, _memory_area + p->location, size);
+	return 0;
+}
+
+int command_push(command c, program *p) {
+	int source = c.variable_index[0];
+	int size = int(read_area_double(c.variable_index[1]));
+	memcpy(_memory_area + p->location, _memory_area + source, size);
+	return 0;
+}
+
 int command_set(command c, program *p) {
 	UNUSED(p);
 #ifndef DISABLE_EXCEPTIONS

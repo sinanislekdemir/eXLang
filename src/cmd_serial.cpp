@@ -41,7 +41,13 @@ int _serial_getline(char *result, unsigned int buffer_length) {
 	Serial.println("");
 	return 0;
 #else
-	fgets(result, buffer_length, stdin);
+	size_t bl = size_t(buffer_length);
+
+	getline(&result, &bl, stdin);
+	if (result[strlen(result) - 1] == '\n') {
+		result[strlen(result) - 1] = '\0';
+	}
+
 	return 0;
 #endif
 }
@@ -116,7 +122,9 @@ int command_getln(command c, program *p) {
 	}
 #endif
 
-	unsigned int buf_size = (unsigned int)(get_double(c, 1));
+	unsigned int buf_size = MAX_LINE_LENGTH;
+	if (c.arg_count == 2)
+		buf_size = (unsigned int)(read_area_double(c.variable_index[1]));
 	if (buf_size > MAX_LINE_LENGTH) {
 		buf_size = MAX_LINE_LENGTH;
 	}

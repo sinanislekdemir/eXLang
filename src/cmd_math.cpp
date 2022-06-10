@@ -10,6 +10,12 @@
 #include <stdlib.h>
 #endif
 
+int command_inc(command c, program *p) {
+	UNUSED(p);
+	write_area(c.variable_index[0], read_area_double(c.variable_index[0]) + 1);
+        return 0;
+}
+
 int command_num(command c, program *p) {
 	UNUSED(p);
 	char str[MAX_LINE_LENGTH];

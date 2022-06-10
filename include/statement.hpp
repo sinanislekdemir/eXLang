@@ -1,7 +1,7 @@
 #ifndef _statement_hpp
 #define _statement_hpp
 #define MAX_COMMAND_LENGTH 10
-#define NUM_STATEMENTS 60
+#define NUM_STATEMENTS 64
 
 #include "constants.hpp"
 #include "program.hpp"

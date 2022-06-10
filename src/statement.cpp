@@ -151,6 +151,14 @@ char find_statement(const char *cmd) {
 		return STATEMENT_RAND;
 	if (strcmp(cmd, "NUM") == 0)
 		return STATEMENT_NUM;
+	if (strcmp(cmd, "LOCATE") == 0)
+		return STATEMENT_LOCATE;
+	if (strcmp(cmd, "PULL") == 0)
+		return STATEMENT_PULL;
+	if (strcmp(cmd, "PUSH") == 0)
+		return STATEMENT_PUSH;
+	if (strcmp(cmd, "INC") == 0)
+		return STATEMENT_INC;
 	return 0;
 }
 
@@ -225,4 +233,8 @@ void register_statements() {
 	add_statement(STATEMENT_DATA, command_noop, 54);
 	add_statement(STATEMENT_RAND, command_rand, 55);
 	add_statement(STATEMENT_NUM, command_num, 56);
+	add_statement(STATEMENT_LOCATE, command_location, 57);
+	add_statement(STATEMENT_PULL, command_pull, 58);
+	add_statement(STATEMENT_PUSH, command_push, 59);
+	add_statement(STATEMENT_INC, command_inc, 60);
 }

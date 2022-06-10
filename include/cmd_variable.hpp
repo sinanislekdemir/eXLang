@@ -18,4 +18,7 @@ int command_num(command c, program *p);
 int command_alloc(command c, program *p);
 // APPEND varname numberic_byte_value [0-255]
 int command_append(command c, program *p);
+int command_location(command c, program *p);
+int command_pull(command c, program *p);
+int command_push(command c, program *p);
 #endif

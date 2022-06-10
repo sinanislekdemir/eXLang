@@ -1,8 +1,6 @@
 # eXLang
 Experimental Esoteric Programming Language that runs on microchips and forward.
 
-More about the language can be found from: https://minik.16x4.com/ 
-
 ## Main Idea
 
 This language is designed for micro controllers. 

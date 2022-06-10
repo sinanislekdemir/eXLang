@@ -73,6 +73,7 @@ program::program() {
 	this->_sleep = false;
 	this->_sleep_start = 0;
 	this->_sleep_duration = 0;
+        this->location = 0;
 	this->pid = 0;
 }
 
