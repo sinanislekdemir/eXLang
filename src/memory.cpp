@@ -18,6 +18,7 @@
 char _memory_area[MAX_MEM] = {0};
 _protected _protected_memory[64] = {0, 0, 0};
 char _last_err[MAX_LINE_LENGTH] = {0};
+extern constant _constants[];
 
 int store_data(const char *cmd) {
 	char temp_buffer[MAX_LINE_LENGTH] = {0};
@@ -45,6 +46,15 @@ int store_data(const char *cmd) {
 	case TYPE_BYTE: {
 		char val = (char)strtol(temp_buffer, 0, 16);
 		write_area((unsigned int)(l), val);
+		break;
+	}
+	default: {
+		for (unsigned int j = 0; j < CONST_COUNT; j++) {
+			if (strcmp(temp_buffer, _constants[j].keyword) == 0) {
+				write_area((unsigned int)(l), _constants[j].val);
+				break;
+			}
+		}
 		break;
 	}
 	}

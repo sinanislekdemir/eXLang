@@ -1,6 +1,7 @@
 #include "cmd_logic.hpp"
 #include "helpers.hpp"
 #include "macros.hpp"
+#include "memory.hpp"
 #ifdef MICRO_DEVICE
 #include <Arduino.h>
 #else
@@ -129,8 +130,8 @@ int command_lrotate(command c, program *p) {
 		return check;
 	}
 
-	char byte = get_byte(c, 0);
-	int bits = get_int(c, 1);
+	char byte = read_area_char(c.variable_index[0]);
+	int bits = int(read_area_double(c.variable_index[1]));
 	byte = (byte << bits) | (byte >> (BITS - bits));
 	return write_area(c.variable_index[0], byte);
 }
@@ -141,8 +142,8 @@ int command_rrotate(command c, program *p) {
 	if (check == -1) {
 		return check;
 	}
-	char byte = get_byte(c, 0);
-	int bits = get_int(c, 1);
+	char byte = read_area_char(c.variable_index[0]);
+	int bits = int(read_area_double(c.variable_index[1]));
 	byte = (byte >> bits) | (byte << (BITS - bits));
 	return write_area(c.variable_index[0], byte);
 }
@@ -153,8 +154,8 @@ int command_lshift(command c, program *p) {
 	if (check == -1) {
 		return check;
 	}
-	char byte = get_byte(c, 0);
-	int bits = get_int(c, 1);
+	char byte = read_area_char(c.variable_index[0]);
+	int bits = int(read_area_double(c.variable_index[1]));
 	byte = byte << bits;
 	return write_area(c.variable_index[0], byte);
 }
@@ -165,8 +166,8 @@ int command_rshift(command c, program *p) {
 	if (check == -1) {
 		return check;
 	}
-	char byte = get_byte(c, 0);
-	int bits = get_int(c, 1);
+	char byte = read_area_char(c.variable_index[0]);
+	int bits = int(read_area_double(c.variable_index[1]));
 	byte = byte >> bits;
 	return write_area(c.variable_index[0], byte);
 }

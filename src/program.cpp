@@ -385,22 +385,12 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 		if (check == 0) {
 			break;
 		}
-		bool assigned = false;
-		for (unsigned int j = 0; j < CONST_COUNT; j++) {
-			if (strcmp(temp_buffer, _constants[j].keyword) == 0) {
-				commands[index].variable_type[i] = TYPE_NUM;
-				commands[index].variable_index[i] = _constants[j].val;
-				assigned = true;
-			}
-		}
-		if (assigned) {
-			continue;
-		}
+
 		unsigned int t = arg_type(temp_buffer);
 		commands[index].variable_type[i] = t;
 
 		if (t == TYPE_NUM && (st == STATEMENT_JE || st == STATEMENT_JG || st == STATEMENT_JL || st == STATEMENT_JGE ||
-				      st == STATEMENT_JLE || st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL)) {
+				      st == STATEMENT_JLE || st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL || st == STATEMENT_SYS)) {
 			commands[index].variable_index[i] = atoi(temp_buffer);
 			continue;
 		}

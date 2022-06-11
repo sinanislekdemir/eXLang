@@ -32,6 +32,52 @@ section:
 
 -------------------------------------------------------------------------------
 
+DATA TYPES:
+
+     BYTE: Bytes occupy 1 byte in memory.
+           You can define 1 byte in two ways.
+           1. Hexedecimal as : 0x41
+           2. String as      : "A"
+
+     NUMBER: By default, numbers are stored as double.
+             On Arduino Mega (ATMEGA devices) it's 4 bytes.
+             On ESP32 devices, it's 8 bytes.
+             On PC, it's again 8 bytes.
+
+     STRING: Strings are simply byte arrays. String areas have a preceeding
+             data type identifier.
+
+-------------------------------------------------------------------------------
+
+CONSTANTS:
+
+     There are some constants that you can store in memory for future use.
+     Most of them are inherited from Arduino Library.
+
+          HIGH
+          LOW
+          RISING
+          FALLING
+          INPUT
+          OUTPUT
+          INPUT_PULLUP
+          PI
+          HALF_PI
+          TWO_PI
+          DEG_TO_RAD
+          RAD_TO_DEG
+          EULER
+
+     You need to store it in a DATA area to use.
+     Example:
+
+     main:
+     DATA @10 TWO_PI
+     SPRINTLN @10
+     ---
+
+-------------------------------------------------------------------------------
+
          !!!! MAIN ENTRY POINT FOR A CODE IS THE "main:" SECTION.!!!!
          Your code must include main: to run.
 
@@ -381,9 +427,10 @@ section:
               Example:
               main:
               DATA @10 30
-              MUL @10 DEG_TO_RAD @10
-              SIN @20 @10
-              SPRINTLN @20
+              DATA @20 DEG_TO_RAD
+              MUL @10 @20 @10
+              SIN @30 @10
+              SPRINTLN @30
               HALT
               ---
 
@@ -473,4 +520,154 @@ section:
               Expects 3 arguments
 
               CPY <TARGET> <SOURCE> <SIZE>
+
+              Example:
+              main:
+              DATA @10 "Hello world"
+              DATA @30 5
+              CPY @40 @10 @30
+              SPRINTLN @40
+              HALT
+              ---
+
+              Output:
+              Hello
+              -----------------------------------------------------------------
+
+    LROTATE:  Left rotate bits of a byte.
+              Expects 2 arguments. Overwrites source.
+
+              LROTATE <SOURCE> <BITS>
+
+              Example:
+              main:
+              DATA @10 "A"
+              DATA @20 3
+              SPRINTLN @10
+              LROTATE @10 @20
+              SPRINTLN @10
+              HALT
+              ---
+
+              Output:
+              A
+              10
+              -----------------------------------------------------------------
+
+    RROTATE:  Right rotate bits of a byte.
+              Expects 2 arguments. Overwrites source.
+
+              -----------------------------------------------------------------
+
+    LSHIFT:   Left shifts bits of a byte.
+              Expects 2 arguments. Overwrites source.
+
+              -----------------------------------------------------------------
+
+    RSHIFT:   Right shifts bits of a byte.
+              Expects 2 arguments. Overwrites source.
+
+              -----------------------------------------------------------------
+
+    SLEEP:    Sleep in milliseconds.
+              Expects 1 argument.
+              NOTE: On micro devices, Sleep can be broken by an interrupt.
+
+              Example:
+              main:
+              DATA @10 "Hello"
+              DATA @20 "World"
+              DATA @30 1000
+              SPRINTLN @10
+              SLEEP @30
+              SPRINTLN @20
+              HALT
+              ---
+
+              Output:
+              Hello
+              <waits for 1 second>
+              World
+
+              -----------------------------------------------------------------
+
+    MILLIS:   Return now() in milliseconds.
+              Expects 1 argument.
+              NOTE: On micro devices, returns time since boot. On PC, returns
+                    unix timestamp.
+
+
+              Example:
+              main:
+              DATA @10 1000
+              MILLIS @20
+              SPRINTLN @20
+              SLEEP @10
+              GOTO 1
+              HALT
+              ---
+              -----------------------------------------------------------------
+    CORE:     Returns CPU core that program runs.
+              On ATMEGA and PC, returns 0.
+              On ESP32, returns the assigned core.
+              Expects 1 argument.
+
+              Example:
+              main:
+              CORE @10
+              SPRINTLN @10
+              HALT
+              ---
+
+              -----------------------------------------------------------------
+
+    SYS:      Driver/System Interrupt.
+              Additional features on eXLang are accessible through their
+              registered system interrupts.
+              You communicate with the drivers using their dedicated memory
+              addresses.
+              Expects 1 argument.
+
+              Some of the registered call numbers on micro devices.
+              WIFI                   = 10
+              WIFI SERVER            = 11
+              SSD1306 Display        = 12
+              BLUETOOTH_SERIAL       = 13
+              BLUETOOTH              = 14
+              SDCARD                 = 15
+
+              Bluetooth driver uses @10 as a command base address.
+              Example:
+              # Initiate bluetooth scanner
+              # 1 = BLEDevice::init, setActiveScan
+              SET @10 1
+              SYS 14
+              # 2 btScanner->start
+              SET @10 2
+              SYS 14
+              # Driver writes the number of found devices into @20
+              SPRINTLN @20
+
+              -----------------------------------------------------------------
+
+    INT:      Register a hardware interrupt on a micro device.
+              Expects 3 arguments.
+
+              INT <PIN> <STATE> <LABEL>
+
+              Example:
+              hello:
+              SET @100 "Hello there!"
+              SPRINTLN @100
+              CALL 1 4
+              ---
+              main:
+              DATA @10 "Interrupt listening on PIN 14"
+              DATA @50 INPUT_PULLUP
+              DATA @60 LOW
+              SPRINTLN @10
+              PINMODE 14 @50
+              INT 14 @60 hello
+              SLEEP 60000
+              ---
 

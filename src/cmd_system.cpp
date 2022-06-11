@@ -31,7 +31,7 @@ int command_core(command c, program *p) {
 
 int command_sys(command c, program *p) {
 	UNUSED(p);
-	int call_num = int(get_double(c, 0));
+	int call_num = c.variable_index[0];
 	if (call_num == 0) {
 		return 0;
 	}
