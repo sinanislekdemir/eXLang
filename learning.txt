@@ -112,7 +112,7 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     SET:      Used to copy a variable from one position to another.
-              Expectes 2 Arguments
+              Expects 2 Arguments
               SET <TARGET> <SOURCE>
 
               Example:
@@ -351,6 +351,13 @@ CONSTANTS:
     JLE:      Jump to given section if A <= B
               -----------------------------------------------------------------
 
+    INC:      Increase the given number by one. Similar to "a++"
+              Expects 1 argument.
+
+              INC <TARGET>
+
+              -----------------------------------------------------------------
+
     ADD:      Adds two numbers.
               Expects 3 Arguments.
               ADD <TARGET> <A> <B>
@@ -381,7 +388,7 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     MUL:      Multiply two given numbers.
-              Expectes 3 Arguments
+              Expects 3 Arguments
               MUL <TARGET> <A> <B>
               -----------------------------------------------------------------
 
@@ -401,7 +408,7 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     POW:      Power operator. (A ** B)
-              Expectes 3 Arguments
+              Expects 3 Arguments
               POW <TARGET> <A> <B>
               -----------------------------------------------------------------
 
@@ -665,9 +672,146 @@ CONSTANTS:
               DATA @10 "Interrupt listening on PIN 14"
               DATA @50 INPUT_PULLUP
               DATA @60 LOW
+              DATA @70 14
               SPRINTLN @10
-              PINMODE 14 @50
-              INT 14 @60 hello
+              PINMODE @70 @50
+              INT @70 @60 hello
               SLEEP 60000
               ---
 
+              -----------------------------------------------------------------
+
+    AREAD:    Analog read operation for micro devices.
+              Expects 2 arguments.
+
+              AREAD <TARGET> <PIN>
+              -----------------------------------------------------------------
+
+    AWRITE:   Analog write operation for micro devices.
+              Expects 2 arguments.
+
+              AWRITE <PIN> <SOURCE>
+
+              -----------------------------------------------------------------
+
+    PINMODE:  Change pin mode on micro devices.
+              Expects 2 arguments.
+
+              PINMODE <PIN> <MODE>
+
+              -----------------------------------------------------------------
+
+    DWRITE:   Digital write operation for micro devices.
+              Expects 2 arguments.
+
+              DWRITE <PIN> <SOURCE>
+
+              -----------------------------------------------------------------
+
+    DREAD:    Digital read operation for micro devices.
+              Expects 2 arguments.
+
+              DREAD <TARGET> <PIN>
+
+              -----------------------------------------------------------------
+
+    RAND:     Generate a random number between given range.
+              Expects 3 arguments.
+
+              RAND <TARGET> <MIN> <MAX>
+
+              -----------------------------------------------------------------
+
+    NUM:      Convert string into number.
+              Expects 2 arguments.
+
+              NUM <TARGET> <SOURCE>
+
+              Example:
+              main:
+              DATA @10 "536"
+              NUM @20 @10
+              SPRINTLN @20
+              HALT
+              ---
+
+              Output:
+              536.000000
+
+              -----------------------------------------------------------------
+
+    LOCATE:   Move the program memory cursor to given location.
+              There is one memory cursor register (a pointer) in a program.
+              You can use the cursor to move in memory dynamically.
+              This is handy for ARRAY like behavior.
+
+              LOCATE <INDEX>
+
+              main:
+              # Store array starting from 400
+              DATA @10 "Enter person name:"
+              DATA @35 " = "
+              DATA @50 32
+              # Pointer location
+              DATA @100 400
+              DATA @150 400
+              # counter
+              DATA @110 0
+              # target
+              DATA @120 10
+              DATA @130 0
+              CALL 1
+              ---
+              add_person:
+              SPRINT @10
+              LOCATE @100
+              # Read into 200
+              DEL @200 @50
+              SREADLN @200 @50
+              # Push string into pointer
+              PUSH @200 @50
+              # Move pointer 32 bytes forward
+              ADD @100 @100 @50
+              INC @110
+              CMP @110 @120
+              JE 2
+              GOTO 0
+              ---
+              print_all:
+              SET @110 @130
+              # reset cursor
+              LOCATE @150
+              DEL @200 @50
+              PULL @200 @50
+              SPRINTLN @200
+              ADD @150 @150 @50
+              INC @110
+              CMP @110 @120
+              JE 3
+              GOTO 1
+              ---
+              exit:
+              HALT
+              ---
+
+              -----------------------------------------------------------------
+
+    PULL:     Pull data from the cursor location to given destination for the
+              given amount of bytes.
+              See LOCATE command to set the cursor location.
+
+              PULL <TARGET> <SIZE>
+
+              Example: See LOCATE
+
+              -----------------------------------------------------------------
+
+    PUSH:     Push data into the cursor location with the given amount of
+              bytes.
+              See LOCATE command to set the cursor location.
+
+              PUSH <SOURCE> <SIZE>
+
+              Example: See LOCATE
+
+              -----------------------------------------------------------------
