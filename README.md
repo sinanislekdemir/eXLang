@@ -62,3 +62,16 @@ sudo make install
 eXLang uses Arduino Framework + FreeRTOS for micro devices. But does not use Arduino IDE. Arduino Framework is a different thing than Arduino IDE. It is a  C++ Framework designed for micro devices. PlatformIO is a platform that supports so many micro devices and different frameworks for embedded programming and allows you to use your favorite IDE for programming.
 
 You will need PlatformIO Core to build exlang for micro devices. You can find more information at: [https://platformio.org/install/cli](https://platformio.org/install/cli)
+
+### Arduino Mega 2560
+
+```
+make atmega256
+```
+
+### ESP32
+
+```
+make esp32
+```
+
