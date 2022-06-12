@@ -53,5 +53,12 @@ python 02_prime.py  169.26s user 43.72s system 100% cpu 3:32.47 total
 You will need meson and ninja to build exLang.
 
 ```
-meson build --buildtype=release && cd build && ninja
+make interpreter
+sudo make install
 ```
+
+## Building for Arduino Mega or ESP32 Compatible board
+
+eXLang uses Arduino Framework + FreeRTOS for micro devices. But does not use Arduino IDE. Arduino Framework is a different thing than Arduino IDE. It is a  C++ Framework designed for micro devices. PlatformIO is a platform that supports so many micro devices and different frameworks for embedded programming and allows you to use your favorite IDE for programming.
+
+You will need PlatformIO Core to build exlang for micro devices. You can find more information at: [https://platformio.org/install/cli](https://platformio.org/install/cli)
