@@ -1,10 +1,10 @@
 #include "cmd_system.hpp"
 #include "macros.hpp"
 #ifdef MICRO_DEVICE
-#include "bluetooth.hpp"
-#include "display_ssd1306.hpp"
-#include "sdcard.hpp"
-#include "wifi.hpp"
+//#include "bluetooth.hpp"
+//#include "display_ssd1306.hpp"
+//#include "sdcard.hpp"
+//#include "wifi.hpp"
 #include <Arduino.h>
 #endif
 #include "helpers.hpp"

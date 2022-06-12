@@ -3,7 +3,7 @@
 
 #include "program.hpp"
 
-#ifdef MICRO_DEVICe
+#ifdef MICRO_DEVICE
 int command_int(command c, program *p);
 #endif
 #endif

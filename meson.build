@@ -20,7 +20,7 @@ subdir('src')
 m_dep = cc.find_library('m', required: true)
 
 executable('exlang',
-           'main.cpp',
+           'src/main.cpp',
            install : true,
            link_with: [exlang_lib],
            dependencies: [m_dep],
