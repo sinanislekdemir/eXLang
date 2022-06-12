@@ -38,6 +38,25 @@ void core_run(void *_core) {
 }
 #endif
 
+void _readline(char *back, size_t size) {
+	char b = 0;
+	memset(back, 0, size);
+	unsigned int i = 0;
+	while (b != '\n') {
+		if (!Serial.available()) {
+			continue;
+		}
+		b = Serial.read();
+		if (b == '\n')
+			break;
+		if (b > 31 && b < 127) {
+			back[i++] = b;
+			Serial.print(b);
+		}
+	}
+	Serial.print('\n');
+}
+
 void setup() {
 	char buffer[128];
 	Serial.begin(9600);
@@ -56,8 +75,7 @@ void setup() {
 		Serial.println(index);
 		Serial.println("End program with a single dot");
 		while (strcmp(buffer, ".") != 0) {
-			memset(buffer, 0, 128);
-			Serial.readBytesUntil('\n', buffer, 128);
+			_readline(buffer, 128);
 			if (buffer[0] != '.' && PROGS[index].status_code != PROGRAM_COMPILING) {
 				PROGS[index].status_code = PROGRAM_COMPILING;
 			}
@@ -70,6 +88,7 @@ void setup() {
 				break;
 			}
 		}
+		memset(buffer, 0, 128);
 	}
 	for (unsigned int i = 0; i < MAX_PROGS; i++) {
 		if (PROGS[i].status_code == PROGRAM_COMPILING) {
