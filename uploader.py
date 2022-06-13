@@ -10,6 +10,7 @@ import serial
 socket = None
 active = True
 ready = False
+device = ''
 
 
 def serial_ports() -> List[str]:
@@ -37,6 +38,7 @@ def serial_ports() -> List[str]:
 def reader():
     """Reader thread."""
     global ready
+    global device
     buffer = ""
     while active:
         if socket is not None:
@@ -48,6 +50,10 @@ def reader():
 
             if buffer.endswith("\n"):
                 buffer = buffer.replace("\r", "")
+                if 'ATMEL' in buffer:
+                    device = 'ATMEL'
+                if "ESP32" in buffer:
+                    device = 'ESP32'
                 if "End program with a single dot" in buffer:
                     ready = True
                 buffer = ""
@@ -81,8 +87,13 @@ def upload(port: str, filename: str):
 
     socket = serial.Serial(port=port)
     print("Waiting for connection")
+    print("Sending comment signal")
+    socket.write(bytes("#\n", "ascii"))
+    print("Waiting...")
     while not ready:
-        print(".", end="")
+        sleep(0.1)
+
+    print(f"Connected device [{device}]")
 
     count = 0
     for fname in filename.split(","):
@@ -103,8 +114,11 @@ def upload(port: str, filename: str):
         socket.flush()
         print("Program sent")
         count += 1
-    for i in range(count, 4):
-        socket.write(bytes("\n.\n", "ascii"))
+    num_progs = 4
+    if device == 'ESP32':
+        num_progs = 8
+    for i in range(count, num_progs):
+        socket.write(bytes(".\n", "ascii"))
         socket.flush()
     w = threading.Thread(target=writer)
     w.start()

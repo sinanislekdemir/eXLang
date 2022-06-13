@@ -23,7 +23,6 @@ fail:
         SET @110 @210
         CMP @100 @130
         JE 4
-        CALL 1
 ---
 success:
         SPRINTLN @100
@@ -31,7 +30,6 @@ success:
         SET @110 @210
         CMP @100 @130
         JE 4
-        CALL 1
 ---
 exit:
         HALT

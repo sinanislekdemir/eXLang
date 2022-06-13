@@ -63,6 +63,12 @@ void setup() {
 	register_statements();
 	prepare_all();
 	int c = 0;
+#ifdef BOARD_ATMEGA
+	Serial.println("ATMEL");
+#endif
+#ifdef BOARD_ESP32
+	Serial.println("ESP32");
+#endif
 	for (unsigned int index = 0; index < MAX_PROGS; index++) {
 		PROGS[index] = program();
 		PROGS[index].pid = index + 1;
@@ -90,11 +96,13 @@ void setup() {
 		}
 		memset(buffer, 0, 128);
 	}
+
 	for (unsigned int i = 0; i < MAX_PROGS; i++) {
 		if (PROGS[i].status_code == PROGRAM_COMPILING) {
 			PROGS[i].status_code = PROGRAM_RUNNING;
 		}
 	}
+
 #ifdef BOARD_ESP32
 	char core_id[2] = {0};
 	for (int i = 0; i < 2; i++) {
@@ -111,9 +119,6 @@ void setup() {
 }
 
 bool step_tasks(int core) {
-#ifdef BOARD_ESP32
-	vTaskDelay(1);
-#endif
 	for (unsigned int index = 0; index < MAX_PROGS; index++) {
 		if (PROGS[index].status_code != PROGRAM_RUNNING) {
 			continue;
@@ -125,9 +130,6 @@ bool step_tasks(int core) {
 			PROGS[index].start_time = millis();
 		}
 		int result = PROGS[index].step();
-#ifdef BOARD_ESP32
-		vTaskDelay(1);
-#endif
 		if (result != PROGRAM_RUNNING) {
 			PROGS[index].status_code = PROGRAM_FREE;
 			PROGS[index].end_time = millis();
