@@ -13,7 +13,7 @@
 int command_inc(command c, program *p) {
 	UNUSED(p);
 	write_area(c.variable_index[0], read_area_double(c.variable_index[0]) + 1);
-        return 0;
+	return 0;
 }
 
 int command_num(command c, program *p) {
@@ -29,6 +29,7 @@ int command_rand(command c, program *p) {
 	int from = int(read_area_double(c.variable_index[1]));
 	int to = int(read_area_double(c.variable_index[2]));
 #ifdef MICRO_DEVICE
+	randomSeed(millis());
 	double rn = double(random(from, to));
 #else
 	to += from;

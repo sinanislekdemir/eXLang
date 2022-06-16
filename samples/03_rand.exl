@@ -11,18 +11,13 @@ main:
         DATA @300 0
         DATA @310 10
         DATA @320 1
-        DATA @1000 "line1"
-        DATA @1010 "line2"
-        DATA @1020 "line3"
         RAND @10 @20 @30
-        SPRINTLN @10
         CALL 1
 ---
 loop:
         SPRINT @210
-        SREADLN @250 @220 
+        SREADLN @250 @220
         NUM @500 @250
-        SPRINTLN @500
         CMP @500 @10
         JE 2
         JG 3
@@ -30,7 +25,6 @@ loop:
         ADD @300 @300 @320
         CMP @300 @310
         JE 5
-        SPRINTLN @1020
         GOTO 0
 ---
 win:
