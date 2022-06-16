@@ -17,7 +17,7 @@ device = ''
 def serial_ports() -> List[str]:
     """Get list of serial ports."""
     if sys.platform.startswith("win"):
-        ports = ["COM%s" % (i + 1) for i in range(256)]
+        ports = [f"COM{i + 1}" for i in range(256)]
     elif sys.platform.startswith("linux") or sys.platform.startswith("cygwin"):
         ports = glob.glob("/dev/tty[A-Za-z]*")
     elif sys.platform.startswith("darwin"):
@@ -83,7 +83,7 @@ def upload(port: str, filename: str):
 
     r = threading.Thread(target=reader)
     r.start()
-    if port == "":
+    if not port:
         port = serial_ports()[0]
 
     socket = serial.Serial(port=port)
@@ -115,10 +115,8 @@ def upload(port: str, filename: str):
         socket.flush()
         print("Program sent")
         count += 1
-    num_progs = 4
-    if device == 'ESP32':
-        num_progs = 8
-    for i in range(count, num_progs):
+    num_progs = 8 if device == 'ESP32' else 4
+    for _ in range(count, num_progs):
         socket.write(bytes(".\n", "ascii"))
         socket.flush()
     w = threading.Thread(target=writer)
