@@ -12,14 +12,12 @@ main:
         DATA @310 10
         DATA @320 1
         RAND @10 @20 @30
-        SPRINTLN @10
         CALL 1
 ---
 loop:
         SPRINT @210
-        SREADLN @250 @220 
+        SREADLN @250 @220
         NUM @500 @250
-        SPRINTLN @500
         CMP @500 @10
         JE 2
         JG 3

@@ -25,6 +25,9 @@ int _serial_getline(char *result, unsigned int buffer_length) {
 	unsigned int cursor = 0;
 	while (strlen(result) < buffer_length) {
 		if (!Serial.available()) {
+#ifdef BOARD_ESP32
+			vTaskDelay(1 / portTICK_PERIOD_MS);
+#endif
 			continue;
 		}
 		c = Serial.read();
@@ -37,8 +40,6 @@ int _serial_getline(char *result, unsigned int buffer_length) {
 		Serial.print(c);
 		result[cursor++] = c;
 	}
-
-	Serial.println("");
 	return 0;
 #else
 	size_t bl = size_t(buffer_length);

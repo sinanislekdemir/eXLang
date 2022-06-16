@@ -23,7 +23,7 @@ clean:
 
 build-only:
 	@platformio run
-	@meson build --buildtype=release --wipe
+	@meson build --buildtype=release
 	@cd build; ninja
 
 help:

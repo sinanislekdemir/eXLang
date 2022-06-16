@@ -32,7 +32,14 @@ int _core(int index) {
 TaskHandle_t task_handles[2];
 void core_run(void *_core) {
 	unsigned int core = (unsigned int)(ulong)(_core);
+	int c = 0;
 	while (step_tasks(core)) {
+#ifdef BOARD_ESP32
+		if (c++ > 1000) {
+			vTaskDelay(1 / portTICK_PERIOD_MS);
+			c = 0;
+		}
+#endif
 		yield();
 	}
 }
@@ -137,10 +144,15 @@ bool step_tasks(int core) {
 			PROGS[index].destroy();
 		}
 	}
+
 	return true;
 }
 
-void loop() {}
+void loop() {
+#ifdef BOARD_ESP32
+	vTaskDelete(NULL);
+#endif
+}
 #else
 int main(int argc, char *argv[]) {
 	if (argc < 2) {

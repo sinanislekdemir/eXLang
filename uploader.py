@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import glob
 import sys
 import threading
@@ -64,9 +65,9 @@ def writer():
     """Writer thread."""
     global active
     while active:
-        c = input("").strip().replace("\n", "")
+        c = input("")
         if socket is not None:
-            socket.write(bytes(c, "ascii"))
+            socket.write(bytes(c + "\n", "ascii"))
         if c == "quit":
             active = False
 
