@@ -7,6 +7,7 @@ from typing import List
 
 import click
 import serial
+from syntax_check import check_file
 
 socket = None
 active = True
@@ -100,6 +101,12 @@ def upload(port: str, filename: str):
     for fname in filename.split(","):
         if fname == "":
             continue
+
+        check = check_file(fname)
+        if check > 0:
+            print(f"Skipping file due to errors: {fname}")
+            continue
+
         print(f"Sending file [{fname}] on port [{port}]")
         data = ""
         with open(fname, "r") as f:
