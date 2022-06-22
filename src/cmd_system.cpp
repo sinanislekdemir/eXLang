@@ -6,6 +6,8 @@
 //#include "sdcard.hpp"
 //#include "wifi.hpp"
 #include <Arduino.h>
+#else
+#include "disk.hpp"
 #endif
 #include "helpers.hpp"
 
@@ -35,6 +37,11 @@ int command_sys(command c, program *p) {
 	if (call_num == 0) {
 		return 0;
 	}
+#ifndef MICRO_DEVICE
+	if (call_num == 1) {
+		return file_system(p);
+	}
+#endif
 #ifdef BOARD_ESP32
 #ifdef WITH_WIFI
 	if (call_num == 10) {
