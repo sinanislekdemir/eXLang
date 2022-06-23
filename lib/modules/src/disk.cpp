@@ -121,7 +121,7 @@ int file_system(program *p) {
 	case 6: { // Set cursor
 		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
 		long cloc = long(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
-		if (index >= 0 && index < NUM_FILES) {
+		if (index < 0 || index >= NUM_FILES) {
 			error_msg("Invalid file index", p->pid);
 			return -1;
 		}
