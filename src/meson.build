@@ -19,5 +19,5 @@ exlang_sources = ['cmd_analog.cpp',
                   'statement.cpp']
 exlang_lib = static_library('exlang',
                             exlang_sources,
-                            include_directories: inc,
+                            include_directories: [inc, inc_modules],
                             install: true)

@@ -21,14 +21,12 @@ Syntax:
 section:   <--- SECTION NAME
 <Statement> <Arg1> <Arg2> <Arg3>
 <Statement> <Arg1> <Arg2> <Arg3>
----        <--- SECTION END MARKER. ALL SECTIONS MUST END WITH THIS!
 
 To make it easier for eyes, you can use indents as:
 
 section:
     <STATEMENT> <ARG1> <ARG2>
     <STATEMENT> <ARG1> <ARG2>
----
 
 -------------------------------------------------------------------------------
 
@@ -72,9 +70,8 @@ CONSTANTS:
      Example:
 
      main:
-     DATA @10 TWO_PI
-     SPRINTLN @10
-     ---
+         DATA @10 TWO_PI
+         SPRINTLN @10
 
 -------------------------------------------------------------------------------
 
@@ -83,10 +80,9 @@ CONSTANTS:
 
          Example:
          main:
-         DATA @10 "hi!"
-         SPRINTLN @10
-         HALT
-         ---
+             DATA @10 "hi!"
+             SPRINTLN @10
+             HALT
 
          ADDRESSES ARE DEFINED BY @<INT> NOTATION.
          Ex: @100 points to 100th byte.
@@ -168,7 +164,7 @@ CONSTANTS:
 
               Example:
 
-              SREADLN @100 
+              SREADLN @100
               -----------------------------------------------------------------
 
     GOTO:     Jumps to given index in the active section.
@@ -182,13 +178,12 @@ CONSTANTS:
               Example:
 
               main:
-              # Set a counter
-              DATA @10 0
-              SPRINTLN @10
-              INC @10
-              # Going for an infinite loop.
-              GOTO 1
-              ---
+                  # Set a counter
+                  DATA @10 0
+                  SPRINTLN @10
+                  INC @10
+                  # Going for an infinite loop.
+                  GOTO 1
 
               Output:
               0
@@ -210,16 +205,15 @@ CONSTANTS:
 
               Example:
               print_number:
-              SPRINT @100
-              SPRINTLN @10
-              ---
+                  SPRINT @100
+                  SPRINTLN @10
+
               main:
-              DATA @10 0
-              DATA @100 "Counter at: "
-              CALL print_number
-              INC @10
-              GOTO 2
-              ---
+                  DATA @10 0
+                  DATA @100 "Counter at: "
+                  CALL print_number
+                  INC @10
+                  GOTO 2
 
               Output:
               Counter at: 1.000000
@@ -229,19 +223,19 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 0
-              DATA @100 "Counter at: "
-              # print_number is not defined yet.
-              # we have to call it by it's index, starting
-              # from 0.
-              CALL 1
-              INC @10
-              GOTO 2
-              ---
+                  DATA @10 0
+                  DATA @100 "Counter at: "
+                  # print_number is not defined yet.
+                  # we have to call it by it's index, starting
+                  # from 0.
+                  CALL 1
+                  INC @10
+                  GOTO 2
+
               print_number:
-              SPRINT @100
-              SPRINTLN @10
-              ---
+                  SPRINT @100
+                  SPRINTLN @10
+
               -----------------------------------------------------------------
 
     HALT:     Halts the execution. So execution will not return back to caller.
@@ -250,8 +244,8 @@ CONSTANTS:
 
               Example:
               main:
-              HALT
-              ---
+                  HALT
+
               -----------------------------------------------------------------
 
     CMP:      Compare two numbers.
@@ -265,20 +259,19 @@ CONSTANTS:
 
               Example:
               exit:
-              DATA @100 "Bye!"
-              SPRINTLN @100
-              HALT
-              ---
+                  DATA @100 "Bye!"
+                  SPRINTLN @100
+                  HALT
+
               main:
-              DATA @10 0
-              # target number
-              DATA @20 10
-              SPRINTLN @10
-              INC @10
-              CMP @10 @20
-              JE exit
-              GOTO 2
-              ---
+                  DATA @10 0
+                  # target number
+                  DATA @20 10
+                  SPRINTLN @10
+                  INC @10
+                  CMP @10 @20
+                  JE exit
+                  GOTO 2
 
               Output:
               0.000000
@@ -313,19 +306,18 @@ CONSTANTS:
 
               Example:
               exit:
-              DATA @100 "Bye!"
-              SPRINTLN @100
-              HALT
-              ---
+                  DATA @100 "Bye!"
+                  SPRINTLN @100
+                  HALT
+
               main:
-              DATA @10 0
-              DATA @20 10
-              SPRINTLN @10
-              INC @10
-              CMP @10 @20
-              JG exit
-              GOTO 2
-              ---
+                  DATA @10 0
+                  DATA @20 10
+                  SPRINTLN @10
+                  INC @10
+                  CMP @10 @20
+                  JG exit
+                  GOTO 2
 
               Output:
               0.000000
@@ -364,11 +356,10 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 5
-              DATA @20 9
-              ADD @30 @10 @20
-              SPRINTLN @30
-              ---
+                  DATA @10 5
+                  DATA @20 9
+                  ADD @30 @10 @20
+                  SPRINTLN @30
 
               Output:
               14
@@ -420,10 +411,9 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 0.523598776
-              SIN @20 @10
-              SPRINTLN @20
-              ---
+                  DATA @10 0.523598776
+                  SIN @20 @10
+                  SPRINTLN @20
 
               Output:
               0.500000
@@ -433,13 +423,12 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 30
-              DATA @20 DEG_TO_RAD
-              MUL @10 @20 @10
-              SIN @30 @10
-              SPRINTLN @30
-              HALT
-              ---
+                  DATA @10 30
+                  DATA @20 DEG_TO_RAD
+                  MUL @10 @20 @10
+                  SIN @30 @10
+                  SPRINTLN @30
+                  HALT
 
               Output:
               0.500000
@@ -497,10 +486,9 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 128
-              ALLOC @100 @10
-              HALT
-              ---
+                  DATA @10 128
+                  ALLOC @100 @10
+                  HALT
 
               -----------------------------------------------------------------
 
@@ -511,12 +499,11 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 "Hello world"
-              DATA @50 128
-              DEL @10 @50
-              SPRINTLN @10
-              HALT
-              ---
+                  DATA @10 "Hello world"
+                  DATA @50 128
+                  DEL @10 @50
+                  SPRINTLN @10
+                  HALT
 
               Output:
               <nothing>
@@ -530,12 +517,11 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 "Hello world"
-              DATA @30 5
-              CPY @40 @10 @30
-              SPRINTLN @40
-              HALT
-              ---
+                  DATA @10 "Hello world"
+                  DATA @30 5
+                  CPY @40 @10 @30
+                  SPRINTLN @40
+                  HALT
 
               Output:
               Hello
@@ -548,13 +534,12 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 "A"
-              DATA @20 3
-              SPRINTLN @10
-              LROTATE @10 @20
-              SPRINTLN @10
-              HALT
-              ---
+                  DATA @10 "A"
+                  DATA @20 3
+                  SPRINTLN @10
+                  LROTATE @10 @20
+                  SPRINTLN @10
+                  HALT
 
               Output:
               A
@@ -582,14 +567,13 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 "Hello"
-              DATA @20 "World"
-              DATA @30 1000
-              SPRINTLN @10
-              SLEEP @30
-              SPRINTLN @20
-              HALT
-              ---
+                  DATA @10 "Hello"
+                  DATA @20 "World"
+                  DATA @30 1000
+                  SPRINTLN @10
+                  SLEEP @30
+                  SPRINTLN @20
+                  HALT
 
               Output:
               Hello
@@ -606,13 +590,13 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 1000
-              MILLIS @20
-              SPRINTLN @20
-              SLEEP @10
-              GOTO 1
-              HALT
-              ---
+                  DATA @10 1000
+                  MILLIS @20
+                  SPRINTLN @20
+                  SLEEP @10
+                  GOTO 1
+                  HALT
+
               -----------------------------------------------------------------
     CORE:     Returns CPU core that program runs.
               On ATMEGA and PC, returns 0.
@@ -621,10 +605,9 @@ CONSTANTS:
 
               Example:
               main:
-              CORE @10
-              SPRINTLN @10
-              HALT
-              ---
+                  CORE @10
+                  SPRINTLN @10
+                  HALT
 
               -----------------------------------------------------------------
 
@@ -636,6 +619,7 @@ CONSTANTS:
               Expects 1 argument.
 
               Some of the registered call numbers on micro devices.
+              FILE SYSTEM            = 1
               WIFI                   = 10
               WIFI SERVER            = 11
               SSD1306 Display        = 12
@@ -664,20 +648,19 @@ CONSTANTS:
 
               Example:
               hello:
-              SET @100 "Hello there!"
-              SPRINTLN @100
-              CALL 1 4
-              ---
+                  SET @100 "Hello there!"
+                  SPRINTLN @100
+                  CALL 1 4
+
               main:
-              DATA @10 "Interrupt listening on PIN 14"
-              DATA @50 INPUT_PULLUP
-              DATA @60 LOW
-              DATA @70 14
-              SPRINTLN @10
-              PINMODE @70 @50
-              INT @70 @60 hello
-              SLEEP 60000
-              ---
+                  DATA @10 "Interrupt listening on PIN 14"
+                  DATA @50 INPUT_PULLUP
+                  DATA @60 LOW
+                  DATA @70 14
+                  SPRINTLN @10
+                  PINMODE @70 @50
+                  INT @70 @60 hello
+                  SLEEP 60000
 
               -----------------------------------------------------------------
 
@@ -729,11 +712,10 @@ CONSTANTS:
 
               Example:
               main:
-              DATA @10 "536"
-              NUM @20 @10
-              SPRINTLN @20
-              HALT
-              ---
+                  DATA @10 "536"
+                  NUM @20 @10
+                  SPRINTLN @20
+                  HALT
 
               Output:
               536.000000
@@ -748,51 +730,50 @@ CONSTANTS:
               LOCATE <INDEX>
 
               main:
-              # Store array starting from 400
-              DATA @10 "Enter person name:"
-              DATA @35 " = "
-              DATA @50 32
-              # Pointer location
-              DATA @100 400
-              DATA @150 400
-              # counter
-              DATA @110 0
-              # target
-              DATA @120 10
-              DATA @130 0
-              CALL 1
-              ---
+                  # Store array starting from 400
+                  DATA @10 "Enter person name:"
+                  DATA @35 " = "
+                  DATA @50 32
+                  # Pointer location
+                  DATA @100 400
+                  DATA @150 400
+                  # counter
+                  DATA @110 0
+                  # target
+                  DATA @120 10
+                  DATA @130 0
+                  CALL 1
+
               add_person:
-              SPRINT @10
-              LOCATE @100
-              # Read into 200
-              DEL @200 @50
-              SREADLN @200 @50
-              # Push string into pointer
-              PUSH @200 @50
-              # Move pointer 32 bytes forward
-              ADD @100 @100 @50
-              INC @110
-              CMP @110 @120
-              JE 2
-              GOTO 0
-              ---
+                  SPRINT @10
+                  LOCATE @100
+                  # Read into 200
+                  DEL @200 @50
+                  SREADLN @200 @50
+                  # Push string into pointer
+                  PUSH @200 @50
+                  # Move pointer 32 bytes forward
+                  ADD @100 @100 @50
+                  INC @110
+                  CMP @110 @120
+                  JE 2
+                  GOTO 0
+
               print_all:
-              SET @110 @130
-              # reset cursor
-              LOCATE @150
-              DEL @200 @50
-              PULL @200 @50
-              SPRINTLN @200
-              ADD @150 @150 @50
-              INC @110
-              CMP @110 @120
-              JE 3
-              GOTO 1
-              ---
+                  SET @110 @130
+                  # reset cursor
+                  LOCATE @150
+                  DEL @200 @50
+                  PULL @200 @50
+                  SPRINTLN @200
+                  ADD @150 @150 @50
+                  INC @110
+                  CMP @110 @120
+                  JE 3
+                  GOTO 1
+
               exit:
-              HALT
-              ---
+                  HALT
 
               -----------------------------------------------------------------
 

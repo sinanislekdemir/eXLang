@@ -13,7 +13,7 @@ main:
         DATA @320 1
         RAND @10 @20 @30
         CALL 1
----
+
 loop:
         SPRINT @210
         SREADLN @250 @220
@@ -26,18 +26,17 @@ loop:
         CMP @300 @310
         JE 5
         GOTO 0
----
+
 win:
-SPRINTLN @190
-HALT
----
+        SPRINTLN @190
+        HALT
+
 too_big:
-SPRINTLN @170
----
+        SPRINTLN @170
+
 too_small:
-SPRINTLN @150
----
+        SPRINTLN @150
+
 lost:
-SPRINTLN @200
-HALT
----
+        SPRINTLN @200
+        HALT

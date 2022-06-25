@@ -13,8 +13,10 @@ add_global_arguments('-DMAX_CMDS=10240', language: 'cpp')
 cc = meson.get_compiler('cpp')
 
 inc = include_directories('include')
+inc_modules = include_directories('lib/modules/src')
 subdir('include')
 subdir('src')
+subdir('lib/modules/src')
 
 
 m_dep = cc.find_library('m', required: true)
@@ -22,7 +24,7 @@ m_dep = cc.find_library('m', required: true)
 executable('exlang',
            'src/main.cpp',
            install : true,
-           link_with: [exlang_lib],
+           link_with: [exlang_lib, exlang_modules_lib],
            dependencies: [m_dep],
-           include_directories: inc
+           include_directories: [inc, inc_modules]
            )

@@ -1,0 +1,94 @@
+main:
+        DATA @980 1
+        DATA @990 0x0a
+        DATA @1000 "Hello world"
+        # Number of lines to write
+        DATA @1020 10
+        # Counter
+        DATA @1030 0
+        # Open read
+        DATA @1040 4
+        # Open write
+        DATA @1050 5
+        # Set cursor location
+        DATA @1060 6
+        # Read file
+        DATA @1070 7
+        # Write file
+        DATA @1080 8
+        # Close file
+        DATA @1090 9
+        # Filename
+        DATA @1110 "hello.txt"
+        # Data size
+        DATA @1130 11
+        DATA @1140 "Writing file"
+        DATA @1160 "Reading file"
+        DATA @1180 "Done"
+        DATA @1200 "Unknown error"
+        DATA @1220 512
+        DATA @1230 0
+        CALL 1
+
+write_file:
+        SPRINTLN @1140
+        DEL @10 @1220
+        SET @10 @1050
+        SET @20 @1110
+        SYS 1
+        # Store file pointer
+        SET @1200 @20
+        # Write into file
+        DEL @10 @1220
+        SET @10 @1080
+        SET @20 @1200
+        SET @30 @1130
+        SET @40 @1000
+        SYS 1
+        DEL @10 @1220
+        SET @10 @1080
+        SET @20 @1200
+        SET @30 @980
+        SET @40 @990
+        SYS 1
+        INC @1030
+        CMP @1030 @1020
+        JE 2
+        GOTO 5
+
+cf_before_read:
+        SPRINTLN @1180
+        DEL @10 @1220
+        SET @10 @1090
+        SET @20 @1200
+        SYS 1
+        CALL 3
+
+read_file:
+        SPRINTLN @1160
+        DEL @10 @1220
+        SET @10 @1040
+        SET @20 @1110
+        SYS 1
+        SET @1200 @20
+        INC @1030
+        # Read file
+        DEL @10 @1220
+        SET @10 @1070
+        SET @20 @1200
+        SET @30 @1130
+        SYS 1
+        SPRINT @30
+        CMP @20 @1230
+        JE 4
+        GOTO 7
+exit:
+        SPRINTLN @1180
+        SET @10 @1090
+        SET @20 @1200
+        SYS 1
+        HALT
+
+on_exception:
+        SPRINTLN @1200
+        HALT

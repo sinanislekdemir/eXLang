@@ -73,7 +73,7 @@ program::program() {
 	this->_sleep = false;
 	this->_sleep_start = 0;
 	this->_sleep_duration = 0;
-        this->location = 0;
+	this->location = 0;
 	this->pid = 0;
 }
 
@@ -282,6 +282,12 @@ int program::compile(char *line) {
 		if (n == -1) {
 			return -1;
 		}
+
+		if (n > 0) {
+			int sub_index = this->subs[this->_compile_cursor];
+			_subs[sub_index].command_count = sub_command_count(sub_index);
+		}
+
 		short free_sub = -1;
 		for (unsigned short i = 0; i < PROG_SUBS; i++) {
 			if (this->subs[i] == -1) {
@@ -310,10 +316,6 @@ int program::compile(char *line) {
 	}
 	// End the existing sub
 	int sub_index = this->subs[this->_compile_cursor];
-	if (strcmp(line, SUB_END) == 0) {
-		_subs[sub_index].command_count = sub_command_count(sub_index);
-		return 1;
-	}
 	int nci = next_command_index();
 	int snc = sub_next_command(sub_index);
 	int check = parse(line, this->pid, nci);
@@ -389,8 +391,9 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 		unsigned int t = arg_type(temp_buffer);
 		commands[index].variable_type[i] = t;
 
-		if (t == TYPE_NUM && (st == STATEMENT_JE || st == STATEMENT_JG || st == STATEMENT_JL || st == STATEMENT_JGE ||
-				      st == STATEMENT_JLE || st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL || st == STATEMENT_SYS)) {
+		if (t == TYPE_NUM &&
+		    (st == STATEMENT_JE || st == STATEMENT_JG || st == STATEMENT_JL || st == STATEMENT_JGE || st == STATEMENT_JLE ||
+		     st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL || st == STATEMENT_SYS)) {
 			commands[index].variable_index[i] = atoi(temp_buffer);
 			continue;
 		}

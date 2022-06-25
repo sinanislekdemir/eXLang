@@ -87,7 +87,6 @@
 #define PROGRAM_HALT 2
 #define PROGRAM_COMPILING 3
 
-#define SUB_END "---"
 #define MAIN "main"
 
 #define ERR_INVALID_COMMAND 100

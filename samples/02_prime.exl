@@ -8,7 +8,7 @@ main:
         DATA @150 1
         SPRINTLN @1
         CALL 1
----
+
 loop:
         XOR @120 @100 @110
         CMP @120 @140
@@ -17,20 +17,19 @@ loop:
         CMP @110 @100
         JE 3
         GOTO 0
----
+
 fail:
         ADD @100 @100 @150
         SET @110 @210
         CMP @100 @130
         JE 4
----
+
 success:
         SPRINTLN @100
         ADD @100 @100 @150
         SET @110 @210
         CMP @100 @130
         JE 4
----
+
 exit:
         HALT
----

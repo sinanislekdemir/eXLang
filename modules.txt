@@ -1,0 +1,236 @@
+                        *** Regsistered Modules ***
+                      -------------------------------
+
+-------------------------------------------------------------------------------
+Created by: Sinan Islekdemir
+            sinan@islekdemir.com
+            2022
+
+-------------------------------------------------------------------------------
+
+    Modules are accessed through certain memory addresses and SYS calls.
+    Usually @10 is used as a command address and @20 is used as the data
+        address.
+
+    Example:
+    SET @10 <value>
+    SET @20 <value>
+    SYS <number>
+
+    Modules return back values using addresses, usually @20 as the data
+    address.
+
+    IMPORTANT NOTE: If your code is using modules, make sure that you do not
+                    store important data in command and data areas defined by
+                    the module. Usually try to use memory areas above 256 or
+                    512. Otherwise, the module can overwrite your data while
+                    processing.
+
+-------------------------------------------------------------------------------
+
+                               (1) File System
+
+    Filesystem can be accessed through SYS 1
+
+    DISK ACCESS COMMAND ADDRESS 10
+    DISK ACCESS DATA ADDRESS    20
+
+    Commands:
+
+    1: Open directory
+       Arguments:
+       @10: 1
+       @20: Path to open
+
+       Return type   : Number
+       Return address: 20
+       Description   : Number of files in the path.
+ 
+       Response: Number of files found in the directory. At this point, you
+       need to keep it in mind to loop. So better store it.
+
+    2: Get file details.
+       Arguments:
+       @10: 2
+       @20: File Index
+
+       Return type   : Number
+       Return address: 20
+       Description   : 1 if it is a directory. 0 for regular files.
+
+       Return type   : String
+       Return address: 30
+       Description   : File name [256 chars]
+
+    3: Close directory
+       Arguments:
+       @10: 3
+
+       Return   : None
+
+    4: Open file for reading
+       Arguments:
+       @10: 4
+       @20: Filename
+
+       Return type   : Number
+       Return address: 20
+       Description   : eXLang has 16 file pointers you can use,
+                       file open returns the used pointer index
+
+       Return type   : Number
+       Return address: 30
+       Description   : File size in bytes
+
+    5: Open file for writing
+       Arguments:
+       @10: 5
+       @20: Filename
+
+       Return type   : Number
+       Return address: 20
+       Description   : eXLang has 16 file pointers you can use,
+                       file open returns the used pointer index
+
+       Return type   : Number
+       Return address: 30
+       Description   : File size in bytes
+
+    6: Set file cursor location (aka fseek)
+       Arguments:
+       @10: 6
+       @20: File index
+       @30: Cursor location
+
+       Return        : None
+
+    7: Read from file
+       Arguments:
+       @10: 7
+       @20: File index
+       @30: Size in bytes
+
+       Return type   : Number
+       Return address: 20
+       Description   : EOF (0 if cursor has reached the end of the file)
+
+       Return type   : String|Byte array
+       Return address: 30
+       Description   : Data buffer
+
+    8: Write into file
+       Arguments:
+       @10: 8
+       @20: File index
+       @30: Size in bytes
+       @40: Data
+
+       Return        : None
+
+    9: Close file
+       Arguments:
+       @10: 9
+       @20: File index
+
+       Return        : None
+ 
+       -----------------------------------------------------------------
+       Example:
+
+         main:
+                 DATA @980 1
+                 DATA @990 0x0a
+                 DATA @1000 "Hello world"
+                 # Number of lines to write
+                 DATA @1020 10
+                 # Counter
+                 DATA @1030 0
+                 # Open read
+                 DATA @1040 4
+                 # Open write
+                 DATA @1050 5
+                 # Set cursor location
+                 DATA @1060 6
+                 # Read file
+                 DATA @1070 7
+                 # Write file
+                 DATA @1080 8
+                 # Close file
+                 DATA @1090 9
+                 # Filename
+                 DATA @1110 "hello.txt"
+                 # Data size
+                 DATA @1130 11
+                 DATA @1140 "Writing file"
+                 DATA @1160 "Reading file"
+                 DATA @1180 "Done"
+                 DATA @1200 "Unknown error"
+                 DATA @1220 512
+                 DATA @1230 0
+                 CALL 1
+
+         write_file:
+                 SPRINTLN @1140
+                 DEL @10 @1220
+                 SET @10 @1050
+                 SET @20 @1110
+                 SYS 1
+                 # Store file pointer
+                 SET @1200 @20
+                 # Write into file
+                 DEL @10 @1220
+                 SET @10 @1080
+                 SET @20 @1200
+                 SET @30 @1130
+                 SET @40 @1000
+                 SYS 1
+                 DEL @10 @1220
+                 SET @10 @1080
+                 SET @20 @1200
+                 SET @30 @980
+                 SET @40 @990
+                 SYS 1
+                 INC @1030
+                 CMP @1030 @1020
+                 JE 2
+                 GOTO 5
+
+         cf_before_read:
+                 SPRINTLN @1180
+                 DEL @10 @1220
+                 SET @10 @1090
+                 SET @20 @1200
+                 SYS 1
+                 CALL 3
+
+         read_file:
+                 SPRINTLN @1160
+                 DEL @10 @1220
+                 SET @10 @1040
+                 SET @20 @1110
+                 SYS 1
+                 SET @1200 @20
+                 INC @1030
+                 # Read file
+                 DEL @10 @1220
+                 SET @10 @1070
+                 SET @20 @1200
+                 SET @30 @1130
+                 SYS 1
+                 SPRINT @30
+                 CMP @20 @1230
+                 JE 4
+                 GOTO 7
+         exit:
+                 SPRINTLN @1180
+                 SET @10 @1090
+                 SET @20 @1200
+                 SYS 1
+                 HALT
+
+         on_exception:
+                 SPRINTLN @1200
+                 HALT
+
+
+-------------------------------------------------------------------------------

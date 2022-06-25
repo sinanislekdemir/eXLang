@@ -3,7 +3,7 @@ exit:
         SPRINTLN @60
         SPRINTLN @1
         HALT
----
+
 loop:
         ADD @60 @10 @20
         SPRINTLN @60
@@ -13,7 +13,7 @@ loop:
         CMP @40 @50
         JE exit
         GOTO 0
----
+
 main:
 # n1 @10 | n2 @20 | count @40 | nterms @50 | nth @60 | increase @70
         DATA @10 0
@@ -24,4 +24,4 @@ main:
         DATA @70 1
         DATA @80 0
         CALL loop
----
+
