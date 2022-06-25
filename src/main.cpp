@@ -10,6 +10,8 @@
 #include <string>
 #endif
 
+extern sub _subs[MAX_SUBS];
+
 extern char _last_err[MAX_LINE_LENGTH];
 #ifndef MICRO_DEVICE
 using namespace std;
@@ -165,11 +167,8 @@ int main(int argc, char *argv[]) {
 		printf("Failed to open file %s\n", argv[1]);
 		return 1;
 	}
-	printf("Register statements: ");
 	register_statements();
-	printf(" done\nPrepare environment: ");
 	prepare_all();
-	printf(" done\n");
 
 	program prog = program();
 	prog.pid = 1;
@@ -182,6 +181,7 @@ int main(int argc, char *argv[]) {
 	string tp;
 	int c = 0;
 	char buffer[1024];
+
 	while (getline(file, tp)) {
 		memset(buffer, 0, 1024);
 		strcat(buffer, tp.c_str());
@@ -191,8 +191,10 @@ int main(int argc, char *argv[]) {
 			return c;
 		}
 	}
+
 	prog.status_code = PROGRAM_RUNNING;
 	int stat = PROGRAM_RUNNING;
+
 	while (stat == PROGRAM_RUNNING) {
 		stat = prog.step();
 	}

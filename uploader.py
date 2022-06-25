@@ -116,7 +116,7 @@ def upload(port: str, filename: str):
             socket.write(bytes(line + "\n", "ascii"))
             socket.flush()
             sleep(0.10)
-            if line == "---":
+            if line[:-1] == ':'
                 sleep(1)
         socket.write(bytes("\n.\n", "ascii"))
         socket.flush()

@@ -197,7 +197,7 @@ def check_file(fname: str) -> int:
         lines = [line.strip() for line in lines]
 
         for line_number, line in enumerate(lines):
-            if line.startswith("#"):
+            if line.startswith("#") or len(line) < 3:
                 continue
             if line.endswith(":"):
                 LABELS.append(line[:-1])

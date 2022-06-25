@@ -83,6 +83,7 @@ int file_system(program *p) {
 				_ex_files[i].is_open = false;
 			}
 			_ex_files[i].is_open = true;
+			_ex_files[i].write = false;
 			fseek(_ex_files[i]._fptr, 0, SEEK_END);
 			_ex_files[i].size = ftell(_ex_files[i]._fptr);
 			fseek(_ex_files[i]._fptr, 0, SEEK_SET);
@@ -107,6 +108,7 @@ int file_system(program *p) {
 				_ex_files[i].is_open = false;
 			}
 			_ex_files[i].is_open = true;
+			_ex_files[i].write = true;
 			fseek(_ex_files[i]._fptr, 0, SEEK_END);
 			_ex_files[i].size = ftell(_ex_files[i]._fptr);
 			fseek(_ex_files[i]._fptr, 0, SEEK_SET);
@@ -136,8 +138,72 @@ int file_system(program *p) {
 		fseek(_ex_files[index]._fptr, cloc, SEEK_SET);
 		return 0;
 	}
-        case 7: { // Read
-                }
+	case 7: { // Read
+		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
+		size_t size = size_t(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
+		if (index < 0 || index >= NUM_FILES) {
+			error_msg("Invalid file index", p->pid);
+			return -1;
+		}
+		if (!_ex_files[index].is_open) {
+			error_msg("File is not open", p->pid);
+			return -1;
+		}
+		if (_ex_files[index].write) {
+			error_msg("File is open for write", p->pid);
+			return -1;
+		}
+		if (size > MAX_LINE_LENGTH) {
+			error_msg("Max buffer size can be MAX_LINE_LENGTH", p->pid);
+			return -1;
+		}
+		char buffer[MAX_LINE_LENGTH] = {0};
+		size_t eof = fread(buffer, size, 1, _ex_files[index]._fptr);
+		free_area(DISK_ACCESS_DATA_ADDRESS, MAX_LINE_LENGTH);
+		write_area(DISK_ACCESS_DATA_ADDRESS, double(eof));
+		write_area(DISK_ACCESS_DATA_ADDRESS + 10, buffer);
+		return 0;
+	}
+	case 8: { // Write
+		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
+		size_t size = size_t(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
+		if (index < 0 || index >= NUM_FILES) {
+			error_msg("Invalid file index", p->pid);
+			return -1;
+		}
+		if (!_ex_files[index].is_open) {
+			error_msg("File is not open", p->pid);
+			return -1;
+		}
+		if (!_ex_files[index].write) {
+			error_msg("File is open for read", p->pid);
+			return -1;
+		}
+		if (size > MAX_LINE_LENGTH) {
+			error_msg("Max buffer size can be MAX_LINE_LENGTH", p->pid);
+			return -1;
+		}
+		char buffer[MAX_LINE_LENGTH] = {0};
+		read_area_str(DISK_ACCESS_DATA_ADDRESS + 20, MAX_LINE_LENGTH, buffer);
+		fwrite(buffer, size, 1, _ex_files[index]._fptr);
+		return 0;
+	}
+	case 9: { // Close
+		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
+		if (index < 0 || index >= NUM_FILES) {
+			error_msg("Invalid file index", p->pid);
+			return -1;
+		}
+		if (!_ex_files[index].is_open) {
+			error_msg("File is not open", p->pid);
+			return -1;
+		}
+		fclose(_ex_files[index]._fptr);
+		_ex_files[index].is_open = false;
+		_ex_files[index].size = 0;
+		_ex_files[index].write = false;
+		return 0;
+	}
 	default: {
 		error_msg("Unknown command", p->pid);
 		return -1;
