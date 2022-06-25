@@ -18,7 +18,7 @@ device = ''
 def serial_ports() -> List[str]:
     """Get list of serial ports."""
     if sys.platform.startswith("win"):
-        ports = ["COM%s" % (i + 1) for i in range(256)]
+        ports = [f"COM{i + 1}" for i in range(256)]
     elif sys.platform.startswith("linux") or sys.platform.startswith("cygwin"):
         ports = glob.glob("/dev/tty[A-Za-z]*")
     elif sys.platform.startswith("darwin"):
