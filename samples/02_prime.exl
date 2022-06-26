@@ -1,34 +1,34 @@
 main:
-        DATA @1 "Checking prime numbers from 3 to 100000"
-        DATA @100 3
-        DATA @110 2
-        DATA @210 2
-        DATA @130 100000
-        DATA @140 0
-        DATA @150 1
-        SPRINTLN @1
+        DATA 1 "Checking prime numbers from 3 to 100000"
+        DATA 100 3
+        DATA 110 2
+        DATA 210 2
+        DATA 130 100000
+        DATA 140 0
+        DATA 150 1
+        SPRINTLN 1s
         CALL 1
 
 loop:
-        XOR @120 @100 @110
-        CMP @120 @140
+        XOR 120l 100l 110l
+        CMP 120l 140l
         JE 2
-        ADD @110 @110 @150
-        CMP @110 @100
+        ADD 110l 110l 150l
+        CMP 110l 100l
         JE 3
         GOTO 0
 
 fail:
-        ADD @100 @100 @150
-        SET @110 @210
-        CMP @100 @130
+        ADD 100l 100l 150l
+        SET 110l 210l
+        CMP 100l 130l
         JE 4
 
 success:
-        SPRINTLN @100
-        ADD @100 @100 @150
-        SET @110 @210
-        CMP @100 @130
+        SPRINTLN 100l
+        ADD 100l 100l 150l
+        SET 110l 210l
+        CMP 100l 130l
         JE 4
 
 exit:

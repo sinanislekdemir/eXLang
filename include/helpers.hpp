@@ -8,7 +8,8 @@ unsigned int extract_size(const char *text, char delimiter, unsigned int index);
 int extract(const char *text, char delimiter, unsigned int index, char *back);
 unsigned int argc(const char *text, char delimiter);
 unsigned int arg_loc(const char *arg);
-unsigned int arg_type(const char *arg);
+short arg_type(const char *arg);
+bool is_address_type(unsigned int t);
 double ctod(char *data);
 
 char hex2c(char *hex);

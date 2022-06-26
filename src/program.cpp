@@ -13,6 +13,7 @@
 #endif
 
 sub _subs[MAX_SUBS] = {};
+extern char _last_err[MAX_LINE_LENGTH];
 extern command commands[MAX_CMDS];
 extern constant _constants[];
 
@@ -246,6 +247,8 @@ int program::step() {
 			this->cursor = handle_sub;
 			sub_index = this->subs[this->cursor];
 			_subs[sub_index].cursor = 0;
+			free_area(1, MAX_LINE_LENGTH);
+			write_area(1, _last_err);
 			return PROGRAM_RUNNING;
 		}
 		return PROGRAM_HALT;
@@ -276,6 +279,7 @@ int program::compile(char *line) {
 	if (l < 3 || line[0] == '#') {
 		return 0;
 	}
+
 	// Create a new sub
 	if (line[l - 1] == ':') {
 		int n = next_sub();
@@ -388,23 +392,24 @@ int program::parse(const char *cmd, unsigned int pid, int index) {
 			break;
 		}
 
-		unsigned int t = arg_type(temp_buffer);
+		short t = arg_type(temp_buffer);
 		commands[index].variable_type[i] = t;
 
-		if (t == TYPE_NUM &&
+		if (t == TYPE_LNG &&
 		    (st == STATEMENT_JE || st == STATEMENT_JG || st == STATEMENT_JL || st == STATEMENT_JGE || st == STATEMENT_JLE ||
 		     st == STATEMENT_JNE || st == STATEMENT_GOTO || st == STATEMENT_CALL || st == STATEMENT_SYS)) {
 			commands[index].variable_index[i] = atoi(temp_buffer);
 			continue;
 		}
 
-		if (t == TYPE_NUM || t == TYPE_STR || t == TYPE_BYTE) {
+		if (t == TYPE_LNG || t == TYPE_DBL || t == TYPE_STR || t == TYPE_BYTE) {
 			error_msg("DATA is not initialized", 0);
 			return -1;
 		}
 
-		if (t == TYPE_ADDRESS) {
-			unsigned short loc = atoi(temp_buffer + 1);
+		if (is_address_type(t)) {
+			temp_buffer[strlen(temp_buffer) - 1] = '\0';
+			unsigned short loc = atoi(temp_buffer);
 			commands[index].variable_index[i] = loc; // unknown yet
 		}
 

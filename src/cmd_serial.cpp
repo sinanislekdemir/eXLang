@@ -58,7 +58,13 @@ int command_serial_println(command c, program *p) {
 	char buffer[MAX_LINE_LENGTH] = {0};
 
 	char type = area_type(c.variable_index[0]);
-	if (type == TYPE_NUM) {
+	if (type == TYPE_LNG) {
+#ifdef MICRO_DEVICE
+		Serial.println(get_long(c, 0));
+#else
+		printf("%ld\n", get_long(c, 0));
+#endif
+	} else if (type == TYPE_DBL) {
 #ifdef MICRO_DEVICE
 		Serial.println(get_double(c, 0));
 #else
@@ -87,7 +93,13 @@ int command_serial_print(command c, program *p) {
 	char buffer[MAX_LINE_LENGTH] = {0};
 
 	char type = area_type(c.variable_index[0]);
-	if (type == TYPE_NUM) {
+	if (type == TYPE_LNG) {
+#ifdef MICRO_DEVICE
+		Serial.print(get_long(c, 0));
+#else
+		printf("%ld", get_long(c, 0));
+#endif
+	} else if (type == TYPE_DBL) {
 #ifdef MICRO_DEVICE
 		Serial.print(get_double(c, 0));
 #else
@@ -113,7 +125,7 @@ int command_serial_print(command c, program *p) {
 
 int command_getln(command c, program *p) {
 #ifndef DISABLE_EXCEPTIONS
-	if (c.variable_type[0] != TYPE_ADDRESS) {
+	if (c.variable_type[0] != TYPE_ADDRESS_STR) {
 		error_msg(ERR_STR_INVALID_TYPE, c.pid);
 		return -1;
 	}
@@ -125,7 +137,7 @@ int command_getln(command c, program *p) {
 
 	unsigned int buf_size = MAX_LINE_LENGTH;
 	if (c.arg_count == 2)
-		buf_size = (unsigned int)(read_area_double(c.variable_index[1]));
+		buf_size = get_long(c, 1);
 	if (buf_size > MAX_LINE_LENGTH) {
 		buf_size = MAX_LINE_LENGTH;
 	}

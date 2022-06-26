@@ -1,43 +1,43 @@
 main:
     # Store array starting from 400
-    DATA @10 "Enter person name:"
-    DATA @35 " = "
-    DATA @50 32
+    DATA 10 "Enter person name:"
+    DATA 35 " = "
+    DATA 50 32
     # Pointer location
-    DATA @100 400
-    DATA @150 400
+    DATA 100 400
+    DATA 150 400
     # counter
-    DATA @110 0
+    DATA 110 0
     # target
-    DATA @120 10
-    DATA @130 0
+    DATA 120 10
+    DATA 130 0
     CALL 1
 
 add_person:
-    SPRINT @10
-    LOCATE @100
+    SPRINT 10s
+    LOCATE 100l
     # Read into 200
-    DEL @200 @50
-    SREADLN @200 @50
+    DEL 200l 50l
+    SREADLN 200s 50l
     # Push string into pointer
-    PUSH @200 @50
+    PUSH 200s 50l
     # Move pointer 32 bytes forward
-    ADD @100 @100 @50
-    INC @110
-    CMP @110 @120
+    ADD 100l 100l 50l
+    INC 110l
+    CMP 110l 120l
     JE 2
     GOTO 0
 
 print_all:
-    SET @110 @130
+    SET 110l 130l
     # reset cursor
-    LOCATE @150
-    DEL @200 @50
-    PULL @200 @50
-    SPRINTLN @200
-    ADD @150 @150 @50
-    INC @110
-    CMP @110 @120
+    LOCATE 150l
+    DEL 200s 50l
+    PULL 200s 50l
+    SPRINTLN 200s
+    ADD 150l 150l 50l
+    INC 110l
+    CMP 110l 120l
     JE 3
     GOTO 1
 

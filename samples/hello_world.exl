@@ -1,0 +1,7 @@
+main:
+    DATA 10 "A"
+    DATA 20 3
+    SPRINTLN 10s
+    LROTATE 10s 20l
+    SPRINTLN 20l
+    HALT

@@ -1,27 +1,31 @@
 exit:
-        DATA @1 "Bye!"
-        SPRINTLN @60
-        SPRINTLN @1
+        DATA 1 "Bye!"
+        SPRINTLN 60l
+        SPRINTLN 1s
         HALT
 
 loop:
-        ADD @60 @10 @20
-        SPRINTLN @60
-        SET @10 @20
-        SET @20 @60
-        ADD @40 @70 @40
-        CMP @40 @50
+        ADD 60l 10l 20l
+        SPRINTLN 60l
+        SET 10l 20l
+        SET 20l 60l
+        ADD 40l 70l 40l
+        CMP 40l 50l
         JE exit
         GOTO 0
 
 main:
-# n1 @10 | n2 @20 | count @40 | nterms @50 | nth @60 | increase @70
-        DATA @10 0
-        DATA @20 1
-        DATA @40 0
-        DATA @50 40
-        DATA @60 0
-        DATA @70 1
-        DATA @80 0
+        # n1 @10 | n2 @20 | count @40 | nterms @50 | nth @60 | increase @70
+        DATA 10 0
+        DATA 20 1
+        DATA 40 0
+        DATA 50 40
+        DATA 60 0
+        DATA 70 1
+        DATA 80 0
+        DATA 100 "Test"
         CALL loop
 
+on_exception:
+        SPRINTLN 1s
+        HALT
