@@ -44,9 +44,9 @@ int command_analogread(command c, program *p) {
 		return PROGRAM_ERR;
 	}
 #endif
-	int pin = int(get_double(c, 1));
+	int pin = int(get_long(c, 1));
 	int val = analogRead(pin);
-	write_area(c.variable_index[0], val);
+	write_area(c.variable_index[0], long(val));
 
 	return 0;
 }
@@ -54,8 +54,8 @@ int command_analogread(command c, program *p) {
 
 #ifdef MICRO_DEVICE
 int command_analogwrite(command c, program *p) {
-	int pin = int(get_double(c, 0));
-	int val = int(get_double(c, 1));
+	int pin = int(get_long(c, 0));
+	int val = int(get_long(c, 1));
 	if (val > 255) {
 		val = 255;
 	}

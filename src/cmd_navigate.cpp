@@ -61,7 +61,7 @@ int command_goto(command c, program *p) {
 		_subs[p->subs[p->cursor]].cursor = c.variable_index[0];
 		return 1;
 	}
-	double location = get_double(c, 0);
+	long location = get_long(c, 0);
 
 	_subs[p->subs[p->cursor]].cursor = int(location);
 	return 1;

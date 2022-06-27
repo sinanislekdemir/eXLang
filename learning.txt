@@ -581,12 +581,12 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "Hello"
-                  DATA @20 "World"
-                  DATA @30 1000
-                  SPRINTLN @10
-                  SLEEP @30
-                  SPRINTLN @20
+                  DATA 10 "Hello"
+                  DATA 20 "World"
+                  DATA 30 1000
+                  SPRINTLN 10s
+                  SLEEP 30l
+                  SPRINTLN 20s
                   HALT
 
               Output:
@@ -604,10 +604,10 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 1000
-                  MILLIS @20
-                  SPRINTLN @20
-                  SLEEP @10
+                  DATA 10 1000
+                  MILLIS 20l
+                  SPRINTLN 20l
+                  SLEEP 10l
                   GOTO 1
                   HALT
 
@@ -619,8 +619,8 @@ CONSTANTS:
 
               Example:
               main:
-                  CORE @10
-                  SPRINTLN @10
+                  CORE 10l
+                  SPRINTLN 10l
                   HALT
 
               -----------------------------------------------------------------
@@ -641,17 +641,17 @@ CONSTANTS:
               BLUETOOTH              = 14
               SDCARD                 = 15
 
-              Bluetooth driver uses @10 as a command base address.
+              Bluetooth driver uses 10 as a command base address.
               Example:
               # Initiate bluetooth scanner
               # 1 = BLEDevice::init, setActiveScan
-              SET @10 1
+              DATA 10 1
               SYS 14
               # 2 btScanner->start
-              SET @10 2
+              DATA 10 2
               SYS 14
               # Driver writes the number of found devices into @20
-              SPRINTLN @20
+              SPRINTLN 20l
 
               -----------------------------------------------------------------
 
@@ -662,19 +662,20 @@ CONSTANTS:
 
               Example:
               hello:
-                  SET @100 "Hello there!"
-                  SPRINTLN @100
+                  DATA 100 "Hello there!"
+                  SPRINTLN 100s
                   CALL 1 4
 
               main:
-                  DATA @10 "Interrupt listening on PIN 14"
-                  DATA @50 INPUT_PULLUP
-                  DATA @60 LOW
-                  DATA @70 14
-                  SPRINTLN @10
-                  PINMODE @70 @50
-                  INT @70 @60 hello
-                  SLEEP 60000
+                  DATA 10 "Interrupt listening on PIN 14"
+                  DATA 50 INPUT_PULLUP
+                  DATA 60 LOW
+                  DATA 70 14
+                  DATA 80 60000
+                  SPRINTLN 10s
+                  PINMODE 70l 50l
+                  INT 70l 60l hello
+                  SLEEP 80l
 
               -----------------------------------------------------------------
 
@@ -726,13 +727,13 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "536"
-                  NUM @20 @10
-                  SPRINTLN @20
+                  DATA 10l "536"
+                  NUM 20l 10s
+                  SPRINTLN 20l
                   HALT
 
               Output:
-              536.000000
+              536
 
               -----------------------------------------------------------------
 
@@ -745,50 +746,49 @@ CONSTANTS:
 
               main:
                   # Store array starting from 400
-                  DATA @10 "Enter person name:"
-                  DATA @35 " = "
-                  DATA @50 32
+                  DATA 10 "Enter person name:"
+                  DATA 35 " = "
+                  DATA 50 32
                   # Pointer location
-                  DATA @100 400
-                  DATA @150 400
+                  DATA 100 400
+                  DATA 150 400
                   # counter
-                  DATA @110 0
+                  DATA 110 0
                   # target
-                  DATA @120 10
-                  DATA @130 0
+                  DATA 120 10
+                  DATA 130 0
                   CALL 1
 
               add_person:
-                  SPRINT @10
-                  LOCATE @100
+                  SPRINT 10s
+                  LOCATE 100l
                   # Read into 200
-                  DEL @200 @50
-                  SREADLN @200 @50
+                  DEL 200l 50l
+                  SREADLN 200s 50l
                   # Push string into pointer
-                  PUSH @200 @50
+                  PUSH 200s 50l
                   # Move pointer 32 bytes forward
-                  ADD @100 @100 @50
-                  INC @110
-                  CMP @110 @120
+                  ADD 100l 100l 50l
+                  INC 110l
+                  CMP 110l 120l
                   JE 2
                   GOTO 0
 
               print_all:
-                  SET @110 @130
+                  SET 110l 130l
                   # reset cursor
-                  LOCATE @150
-                  DEL @200 @50
-                  PULL @200 @50
-                  SPRINTLN @200
-                  ADD @150 @150 @50
-                  INC @110
-                  CMP @110 @120
+                  LOCATE 150l
+                  DEL 200s 50l
+                  PULL 200s 50l
+                  SPRINTLN 200s
+                  ADD 150l 150l 50l
+                  INC 110l
+                  CMP 110l 120l
                   JE 3
                   GOTO 1
 
               exit:
                   HALT
-
               -----------------------------------------------------------------
 
     PULL:     Pull data from the cursor location to given destination for the
