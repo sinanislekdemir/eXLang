@@ -3,11 +3,17 @@
 
 command commands[MAX_CMDS] = {};
 
-double get_double(command c, int index) { return read_area_double(c.variable_index[index]); }
+double get_double(command c, int index) {
+	if (c.variable_type[index] == TYPE_ADDRESS_DBL)
+		return read_area_double(c.variable_index[index]);
+	return double(read_area_long(c.variable_index[index]));
+}
 
-int get_int(command c, int index) { return read_area_int(c.variable_index[index]); }
-
-long get_long(command c, int index) { return read_area_long(c.variable_index[index]); }
+long get_long(command c, int index) {
+	if (c.variable_type[index] == TYPE_ADDRESS_LNG)
+		return read_area_long(c.variable_index[index]);
+	return long(read_area_double(c.variable_index[index]));
+}
 
 void get_string(command c, int index, char *back, unsigned int size) { read_area_str(c.variable_index[index], size, back); }
 

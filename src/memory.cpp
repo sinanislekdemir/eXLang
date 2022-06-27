@@ -26,11 +26,9 @@ int store_data(const char *cmd) {
 
 	extract(cmd, ' ', 1, location);
 	extract(cmd, ' ', 2, temp_buffer);
-	if (location[0] != '@') {
-		return -1;
-	}
+
 	unsigned int t = arg_type(temp_buffer);
-	long l = atol(location + 1);
+	long l = atol(location);
 	switch (t) {
 	case TYPE_STR: {
 		char tmp[MAX_LINE_LENGTH] = {0};
@@ -38,8 +36,13 @@ int store_data(const char *cmd) {
 		write_area((unsigned int)(l), tmp);
 		break;
 	}
-	case TYPE_NUM: {
+	case TYPE_DBL: {
 		double x = atof(temp_buffer);
+		write_area((unsigned int)(l), x);
+		break;
+	}
+	case TYPE_LNG: {
+		long x = atol(temp_buffer);
 		write_area((unsigned int)(l), x);
 		break;
 	}
@@ -91,21 +94,12 @@ int write_area(unsigned int index, char *data) {
 	return 0;
 }
 
-int write_area(unsigned int index, int data) {
-	if (index == 0) {
-		return -1;
-	}
-	memcpy(_memory_area + index, &data, sizeof(int));
-	_memory_area[index - 1] = char(TYPE_NUM);
-	return 0;
-}
-
 int write_area(unsigned int index, double data) {
 	if (index == 0) {
 		return -1;
 	}
 	memcpy(_memory_area + index, &data, sizeof(double));
-	_memory_area[index - 1] = char(TYPE_NUM);
+	_memory_area[index - 1] = char(TYPE_DBL);
 	return 0;
 }
 
@@ -113,8 +107,8 @@ int write_area(unsigned int index, long data) {
 	if (index == 0) {
 		return -1;
 	}
-	memcpy(_memory_area + index, &data, sizeof(double));
-	_memory_area[index - 1] = char(TYPE_NUM);
+	memcpy(_memory_area + index, &data, sizeof(long));
+	_memory_area[index - 1] = char(TYPE_LNG);
 	return 0;
 }
 
@@ -123,7 +117,8 @@ int write_area(unsigned int index, char data) {
 		return -1;
 	}
 	_memory_area[index] = data;
-	_memory_area[index - 1] = char(TYPE_BYTE);
+	if (_memory_area[index - 1] == 0)
+		_memory_area[index - 1] = char(TYPE_BYTE);
 	return 0;
 }
 
@@ -169,11 +164,6 @@ int area_type(unsigned int index) { return _memory_area[index - 1]; }
 
 double read_area_double(unsigned int index) {
 	double *result = (double *)(_memory_area + index);
-	return *result;
-}
-
-int read_area_int(unsigned int index) {
-	int *result = (int *)(_memory_area + index);
 	return *result;
 }
 

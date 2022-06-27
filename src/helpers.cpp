@@ -126,32 +126,44 @@ unsigned int arg_loc(const char *arg) {
 	return atoi(tmp);
 }
 
-unsigned int arg_type(const char *arg) {
+bool is_address_type(unsigned int t) { return t >= 40 && t <= 42; }
+
+short arg_type(const char *arg) {
 	// return the argument's type
-	if (strlen(arg) == 0) {
+	int li = strlen(arg) - 1;
+	if (li == -1) {
 		return TYPE_NONE;
 	}
-	if (arg[0] == '"') {
-		return TYPE_STR;
-	}
-	if (arg[strlen(arg) - 1] == ':') {
+	if (arg[li] == ':') {
 		return TYPE_LABEL;
 	}
 	if (strncmp(arg, "0x", 2) == 0) {
 		return TYPE_BYTE;
 	}
-	if (arg[0] == '@') {
-		return TYPE_ADDRESS;
-	}
+	if (arg[0] == '"')
+		return TYPE_STR;
+	if (arg[li] == 'f')
+		return TYPE_ADDRESS_DBL;
+	if (arg[li] == 'l')
+		return TYPE_ADDRESS_LNG;
+	if (arg[li] == 's')
+		return TYPE_ADDRESS_STR;
+
 	bool isnum = true;
+	bool isdbl = false;
 	for (unsigned int i = 0; i < strlen(arg); i++) {
 		if (!isdigit(arg[i]) && arg[i] != '.' && arg[i] != '-') {
 			isnum = false;
 			break;
 		}
+		if (arg[i] == '.') {
+			isdbl = true;
+		}
 	}
 	if (isnum) {
-		return TYPE_NUM;
+		if (isdbl)
+			return TYPE_DBL;
+		return TYPE_LNG;
 	}
 
 	// skip file check for now.
@@ -205,6 +217,6 @@ void ltrim(char *src) {
 }
 
 bool is_data_type(int type) {
-	return (type == TYPE_NUM || type == TYPE_STR || type == TYPE_FILE || type == TYPE_REGISTER || type == TYPE_CONSTANT ||
-		type == TYPE_BYTE || type == TYPE_ADDRESS);
+	return (type == TYPE_LNG || type == TYPE_DBL || type == TYPE_STR || type == TYPE_FILE || type == TYPE_REGISTER ||
+		type == TYPE_CONSTANT || type == TYPE_BYTE || type >= TYPE_ADDRESS_DBL);
 }

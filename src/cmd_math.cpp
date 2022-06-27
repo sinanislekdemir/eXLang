@@ -12,7 +12,10 @@
 
 int command_inc(command c, program *p) {
 	UNUSED(p);
-	write_area(c.variable_index[0], read_area_double(c.variable_index[0]) + 1);
+	if (c.variable_type[0] == TYPE_ADDRESS_DBL)
+		write_area(c.variable_index[0], read_area_double(c.variable_index[0]) + 1);
+	if (c.variable_type[0] == TYPE_ADDRESS_LNG)
+		write_area(c.variable_index[0], read_area_long(c.variable_index[0]) + 1);
 	return 0;
 }
 
@@ -20,81 +23,146 @@ int command_num(command c, program *p) {
 	UNUSED(p);
 	char str[MAX_LINE_LENGTH];
 	read_area_str(c.variable_index[1], MAX_LINE_LENGTH, str);
-	return write_area(c.variable_index[0], atof(str));
+	if (c.variable_type[0] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], atof(str));
+	if (c.variable_type[0] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], atol(str));
+	return -1;
 }
 
 int command_rand(command c, program *p) {
 	UNUSED(p);
 	// RAND @target @from @to
-	int from = int(read_area_double(c.variable_index[1]));
-	int to = int(read_area_double(c.variable_index[2]));
+	int from = get_long(c, 1);
+	int to = get_long(c, 2);
 #ifdef MICRO_DEVICE
 	randomSeed(millis());
-	double rn = double(random(from, to));
+	long rn = random(from, to);
 #else
 	to += from;
-	double rn = double(random() % to);
+	long rn = random() % to;
 #endif
 	return write_area(c.variable_index[0], rn);
 }
 
 int command_add(command c, program *p) {
 	UNUSED(p);
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) + read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) + read_area_long(c.variable_index[2]));
 
-	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) + read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) + read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) + read_area_double(c.variable_index[2]));
+	return -1;
 }
 
 int command_sub(command c, program *p) {
 	UNUSED(p);
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) - read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) - read_area_long(c.variable_index[2]));
 
-	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) - read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) - read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) - read_area_double(c.variable_index[2]));
+	return -1;
 }
 
 int command_div(command c, program *p) {
 	UNUSED(p);
 
-	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) / read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) / read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) / read_area_long(c.variable_index[2]));
+
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) / read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) / read_area_double(c.variable_index[2]));
+	return -1;
 }
 
 int command_mul(command c, program *p) {
 	UNUSED(p);
 
-	return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) * read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) * read_area_double(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_double(c.variable_index[1]) * read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) * read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) * read_area_double(c.variable_index[2]));
+	return -1;
 }
 
 int command_xor(command c, program *p) {
 	UNUSED(p);
-
-	return write_area(c.variable_index[0],
-			  double(int(read_area_double(c.variable_index[1])) % int(read_area_double(c.variable_index[2]))));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0],
+				  long(read_area_double(c.variable_index[1])) % long(read_area_double(c.variable_index[2])));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], long(read_area_double(c.variable_index[1])) % read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) % read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) % long(read_area_double(c.variable_index[2])));
+	return -1;
 }
 
 int command_or(command c, program *p) {
 	UNUSED(p);
 
-	return write_area(c.variable_index[0],
-			  double(int(read_area_double(c.variable_index[1])) | int(read_area_double(c.variable_index[2]))));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0],
+				  long(read_area_double(c.variable_index[1])) | long(read_area_double(c.variable_index[2])));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], long(read_area_double(c.variable_index[1])) | read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) | read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) | long(read_area_double(c.variable_index[2])));
+	return -1;
 }
 
 int command_and(command c, program *p) {
 	UNUSED(p);
-
-	return write_area(c.variable_index[0],
-			  double(int(read_area_double(c.variable_index[1])) & int(read_area_double(c.variable_index[2]))));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0],
+				  long(read_area_double(c.variable_index[1])) & long(read_area_double(c.variable_index[2])));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], long(read_area_double(c.variable_index[1])) & read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) & read_area_long(c.variable_index[2]));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], read_area_long(c.variable_index[1]) & long(read_area_double(c.variable_index[2])));
+	return -1;
 }
 
 int command_pow(command c, program *p) {
 	UNUSED(p);
-
-	return write_area(c.variable_index[0], pow(read_area_double(c.variable_index[1]), read_area_double(c.variable_index[2])));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0], pow(read_area_double(c.variable_index[1]), read_area_double(c.variable_index[2])));
+	if (c.variable_type[1] == TYPE_ADDRESS_DBL && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0],
+				  pow(read_area_double(c.variable_index[1]), double(read_area_long(c.variable_index[2]))));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_LNG)
+		return write_area(c.variable_index[0],
+				  pow(double(read_area_long(c.variable_index[1])), double(read_area_long(c.variable_index[2]))));
+	if (c.variable_type[1] == TYPE_ADDRESS_LNG && c.variable_type[2] == TYPE_ADDRESS_DBL)
+		return write_area(c.variable_index[0],
+				  pow(double(read_area_long(c.variable_index[1])), read_area_double(c.variable_index[2])));
+	return -1;
 }
 
 int command_trigonometry(command c, program *p) {
 	UNUSED(p);
-	if (c.variable_type[0] != TYPE_ADDRESS) {
-		error_msg(ERR_STR_INVALID_TYPE, c.pid);
-		return -1;
-	}
 
 	double val = get_double(c, 1);
 	double res = 0;

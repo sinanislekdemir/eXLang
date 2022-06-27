@@ -23,12 +23,12 @@ int command_core(command c, program *p) {
 #ifdef BOARD_ESP32
 	core = xPortGetCoreID();
 #endif
-	if (c.variable_type[0] != TYPE_ADDRESS) {
+	if (!is_address_type(c.variable_type[0])) {
 		error_msg(ERR_STR_INVALID_TYPE, c.pid);
 		return -1;
 	}
 
-	return write_area(c.variable_index[0], double(core));
+	return write_area(c.variable_index[0], long(core));
 }
 
 int command_sys(command c, program *p) {

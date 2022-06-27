@@ -30,6 +30,23 @@ section:
 
 -------------------------------------------------------------------------------
 
+        Memory Addresses
+
+     Almost all commands get arguments by memory addresses. eXLang is a
+statically typed language without variables. You can define the arguments
+type by type notation at the address.
+
+     Long: Memory addresses that are read as a long end with `l`.
+           Example: 10l
+
+     Double: Memory addresses that are read as a double end with 'f'.
+             This notation is decided to avoid any confusion with %d in
+             printf.
+             Example: 10f
+
+     String: String addresses that are read as char arrays end with 's'.
+             They are either read with given sizes or until the 0 byte.
+
 DATA TYPES:
 
      BYTE: Bytes occupy 1 byte in memory.
@@ -37,10 +54,7 @@ DATA TYPES:
            1. Hexedecimal as : 0x41
            2. String as      : "A"
 
-     NUMBER: By default, numbers are stored as double.
-             On Arduino Mega (ATMEGA devices) it's 4 bytes.
-             On ESP32 devices, it's 8 bytes.
-             On PC, it's again 8 bytes.
+     NUMBER: By default, numbers are stored as double or long.
 
      STRING: Strings are simply byte arrays. String areas have a preceeding
              data type identifier.
@@ -70,8 +84,8 @@ CONSTANTS:
      Example:
 
      main:
-         DATA @10 TWO_PI
-         SPRINTLN @10
+         DATA 10f TWO_PI
+         SPRINTLN 10f
 
 -------------------------------------------------------------------------------
 
@@ -80,12 +94,12 @@ CONSTANTS:
 
          Example:
          main:
-             DATA @10 "hi!"
-             SPRINTLN @10
+             DATA 10 "hi!"
+             SPRINTLN 10s
              HALT
 
-         ADDRESSES ARE DEFINED BY @<INT> NOTATION.
-         Ex: @100 points to 100th byte.
+         ADDRESSES ARE DEFINED BY <INT>(s/l/f) NOTATION.
+         Ex: 100s points to 100th byte as string.
 
 -------------------------------------------------------------------------------
 
@@ -97,7 +111,7 @@ CONSTANTS:
               DATA <ADDRESS> <DATA>
 
               Example:
-              DATA @100 "Hello world"
+              DATA 100 "Hello world"
 
               Stores "Hello world" starting from byte 100 in memory.
               Additionally, byte 99 is used for marking the following
@@ -112,9 +126,9 @@ CONSTANTS:
               SET <TARGET> <SOURCE>
 
               Example:
-              DATA @100 "Hello world"
-              SET @200 @100
-              SPRINTLN @200
+              DATA 100 "Hello world"
+              SET 200s 100s
+              SPRINTLN 200s
 
               Output:
               Hello world
@@ -126,10 +140,10 @@ CONSTANTS:
               SPRINT <SOURCE>
 
               Example:
-              DATA @100 "Hello world"
-              DATA @150 23
-              SPRINT @100
-              SPRINT @150
+              DATA 100 "Hello world"
+              DATA 150 23
+              SPRINT 100s
+              SPRINT 150l
 
               Output:
               Hello world23
@@ -144,10 +158,10 @@ CONSTANTS:
               SPRINTLN <SOURCE>
 
               Example:
-              DATA @100 "Hello world"
-              DATA @150 23
-              SPRINTLN @100
-              SPRINTLN @150
+              DATA 100 "Hello world"
+              DATA 150 23
+              SPRINTLN 100s
+              SPRINTLN 150l
 
               Output:
               Hello world
@@ -164,13 +178,13 @@ CONSTANTS:
 
               Example:
 
-              SREADLN @100
+              SREADLN 100s
               -----------------------------------------------------------------
 
     GOTO:     Jumps to given index in the active section.
               Comments are not counted.
-              Does not include "@" in the syntax as it jumps to a code location
-              Not to a memory.
+              Does not include type notation in the syntax as it jumps to a
+              code location. Not to a memory.
               Expects 1 Argument.
 
               GOTO <LINE>
@@ -179,9 +193,9 @@ CONSTANTS:
 
               main:
                   # Set a counter
-                  DATA @10 0
-                  SPRINTLN @10
-                  INC @10
+                  DATA 10 0
+                  SPRINTLN 10l
+                  INC 10l
                   # Going for an infinite loop.
                   GOTO 1
 
@@ -205,14 +219,14 @@ CONSTANTS:
 
               Example:
               print_number:
-                  SPRINT @100
-                  SPRINTLN @10
+                  SPRINT 100s
+                  SPRINTLN 10l
 
               main:
-                  DATA @10 0
-                  DATA @100 "Counter at: "
+                  DATA 10 0
+                  DATA 100 "Counter at: "
                   CALL print_number
-                  INC @10
+                  INC 10l
                   GOTO 2
 
               Output:
@@ -223,18 +237,18 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 0
-                  DATA @100 "Counter at: "
+                  DATA 10 0
+                  DATA 100 "Counter at: "
                   # print_number is not defined yet.
                   # we have to call it by it's index, starting
                   # from 0.
                   CALL 1
-                  INC @10
+                  INC 10l
                   GOTO 2
 
               print_number:
-                  SPRINT @100
-                  SPRINTLN @10
+                  SPRINT 100s
+                  SPRINTLN 10l
 
               -----------------------------------------------------------------
 
@@ -259,17 +273,17 @@ CONSTANTS:
 
               Example:
               exit:
-                  DATA @100 "Bye!"
-                  SPRINTLN @100
+                  DATA 100 "Bye!"
+                  SPRINTLN 100s
                   HALT
 
               main:
-                  DATA @10 0
+                  DATA 10 0
                   # target number
-                  DATA @20 10
-                  SPRINTLN @10
-                  INC @10
-                  CMP @10 @20
+                  DATA 20 10
+                  SPRINTLN 10l
+                  INC 10l
+                  CMP 10l 20l
                   JE exit
                   GOTO 2
 
@@ -306,16 +320,16 @@ CONSTANTS:
 
               Example:
               exit:
-                  DATA @100 "Bye!"
-                  SPRINTLN @100
+                  DATA 100 "Bye!"
+                  SPRINTLN 100s
                   HALT
 
               main:
-                  DATA @10 0
-                  DATA @20 10
-                  SPRINTLN @10
-                  INC @10
-                  CMP @10 @20
+                  DATA 10 0
+                  DATA 20 10
+                  SPRINTLN 10l
+                  INC 10l
+                  CMP 10l 20l
                   JG exit
                   GOTO 2
 
@@ -344,7 +358,7 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     INC:      Increase the given number by one. Similar to "a++"
-              Expects 1 argument.
+              Expects 1 argument. Works with both Long and Double types.
 
               INC <TARGET>
 
@@ -356,10 +370,10 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 5
-                  DATA @20 9
-                  ADD @30 @10 @20
-                  SPRINTLN @30
+                  DATA 10 5
+                  DATA 20 9
+                  ADD 30 10 20
+                  SPRINTLN 30l
 
               Output:
               14
@@ -384,36 +398,36 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     XOR:      eXclusive OR
-              Expects 3 Arguments
+              Expects 3 Arguments. Only Long type is expected.
               XOR <TARGET> <A> <B>
               -----------------------------------------------------------------
 
     OR:       Or statement
-              Expects 3 Arguments
+              Expects 3 Arguments. Only Long type is expected.
               OR <TARGET> <A> <B>
               -----------------------------------------------------------------
 
     AND:      And statement
-              Expects 3 Arguments
+              Expects 3 Arguments. Only Long type is expected.
               AND <TARGET> <A> <B>
               -----------------------------------------------------------------
 
     POW:      Power operator. (A ** B)
-              Expects 3 Arguments
+              Expects 3 Arguments.
               POW <TARGET> <A> <B>
               -----------------------------------------------------------------
 
     SIN:      Calculate Sin of the given number.
-              Expects 2 Arguments
+              Expects 2 Arguments. Only Double (f) type is expected.
               SIN <TARGET> <A>
 
               Angles in RADIANS.
 
               Example:
               main:
-                  DATA @10 0.523598776
-                  SIN @20 @10
-                  SPRINTLN @20
+                  DATA 10 0.523598776
+                  SIN 20f 10f
+                  SPRINTLN 20f
 
               Output:
               0.500000
@@ -423,11 +437,11 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 30
-                  DATA @20 DEG_TO_RAD
-                  MUL @10 @20 @10
-                  SIN @30 @10
-                  SPRINTLN @30
+                  DATA 10 30.0
+                  DATA 20 DEG_TO_RAD
+                  MUL 10f 20f 10f
+                  SIN 30f 10f
+                  SPRINTLN 30f
                   HALT
 
               Output:
@@ -486,8 +500,8 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 128
-                  ALLOC @100 @10
+                  DATA 10 128
+                  ALLOC 100s 10l
                   HALT
 
               -----------------------------------------------------------------
@@ -499,10 +513,10 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "Hello world"
-                  DATA @50 128
-                  DEL @10 @50
-                  SPRINTLN @10
+                  DATA 10 "Hello world"
+                  DATA 50 128
+                  DEL 10s 50l
+                  SPRINTLN 10s
                   HALT
 
               Output:
@@ -517,10 +531,10 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "Hello world"
-                  DATA @30 5
-                  CPY @40 @10 @30
-                  SPRINTLN @40
+                  DATA 10 "Hello world"
+                  DATA 30 5
+                  CPY 40s 10s 30l
+                  SPRINTLN 40s
                   HALT
 
               Output:
@@ -528,17 +542,17 @@ CONSTANTS:
               -----------------------------------------------------------------
 
     LROTATE:  Left rotate bits of a byte.
-              Expects 2 arguments. Overwrites source.
+              Expects 2 arguments. Overwrites source. Expects byte type (s)
 
               LROTATE <SOURCE> <BITS>
 
               Example:
               main:
-                  DATA @10 "A"
-                  DATA @20 3
-                  SPRINTLN @10
-                  LROTATE @10 @20
-                  SPRINTLN @10
+                  DATA 10 "A"
+                  DATA 20 3
+                  SPRINTLN 10s
+                  LROTATE 10l 20l
+                  SPRINTLN 10s
                   HALT
 
               Output:
@@ -567,12 +581,12 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "Hello"
-                  DATA @20 "World"
-                  DATA @30 1000
-                  SPRINTLN @10
-                  SLEEP @30
-                  SPRINTLN @20
+                  DATA 10 "Hello"
+                  DATA 20 "World"
+                  DATA 30 1000
+                  SPRINTLN 10s
+                  SLEEP 30l
+                  SPRINTLN 20s
                   HALT
 
               Output:
@@ -590,10 +604,10 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 1000
-                  MILLIS @20
-                  SPRINTLN @20
-                  SLEEP @10
+                  DATA 10 1000
+                  MILLIS 20l
+                  SPRINTLN 20l
+                  SLEEP 10l
                   GOTO 1
                   HALT
 
@@ -605,8 +619,8 @@ CONSTANTS:
 
               Example:
               main:
-                  CORE @10
-                  SPRINTLN @10
+                  CORE 10l
+                  SPRINTLN 10l
                   HALT
 
               -----------------------------------------------------------------
@@ -627,17 +641,17 @@ CONSTANTS:
               BLUETOOTH              = 14
               SDCARD                 = 15
 
-              Bluetooth driver uses @10 as a command base address.
+              Bluetooth driver uses 10 as a command base address.
               Example:
               # Initiate bluetooth scanner
               # 1 = BLEDevice::init, setActiveScan
-              SET @10 1
+              DATA 10 1
               SYS 14
               # 2 btScanner->start
-              SET @10 2
+              DATA 10 2
               SYS 14
               # Driver writes the number of found devices into @20
-              SPRINTLN @20
+              SPRINTLN 20l
 
               -----------------------------------------------------------------
 
@@ -648,19 +662,20 @@ CONSTANTS:
 
               Example:
               hello:
-                  SET @100 "Hello there!"
-                  SPRINTLN @100
+                  DATA 100 "Hello there!"
+                  SPRINTLN 100s
                   CALL 1 4
 
               main:
-                  DATA @10 "Interrupt listening on PIN 14"
-                  DATA @50 INPUT_PULLUP
-                  DATA @60 LOW
-                  DATA @70 14
-                  SPRINTLN @10
-                  PINMODE @70 @50
-                  INT @70 @60 hello
-                  SLEEP 60000
+                  DATA 10 "Interrupt listening on PIN 14"
+                  DATA 50 INPUT_PULLUP
+                  DATA 60 LOW
+                  DATA 70 14
+                  DATA 80 60000
+                  SPRINTLN 10s
+                  PINMODE 70l 50l
+                  INT 70l 60l hello
+                  SLEEP 80l
 
               -----------------------------------------------------------------
 
@@ -712,13 +727,13 @@ CONSTANTS:
 
               Example:
               main:
-                  DATA @10 "536"
-                  NUM @20 @10
-                  SPRINTLN @20
+                  DATA 10l "536"
+                  NUM 20l 10s
+                  SPRINTLN 20l
                   HALT
 
               Output:
-              536.000000
+              536
 
               -----------------------------------------------------------------
 
@@ -731,50 +746,49 @@ CONSTANTS:
 
               main:
                   # Store array starting from 400
-                  DATA @10 "Enter person name:"
-                  DATA @35 " = "
-                  DATA @50 32
+                  DATA 10 "Enter person name:"
+                  DATA 35 " = "
+                  DATA 50 32
                   # Pointer location
-                  DATA @100 400
-                  DATA @150 400
+                  DATA 100 400
+                  DATA 150 400
                   # counter
-                  DATA @110 0
+                  DATA 110 0
                   # target
-                  DATA @120 10
-                  DATA @130 0
+                  DATA 120 10
+                  DATA 130 0
                   CALL 1
 
               add_person:
-                  SPRINT @10
-                  LOCATE @100
+                  SPRINT 10s
+                  LOCATE 100l
                   # Read into 200
-                  DEL @200 @50
-                  SREADLN @200 @50
+                  DEL 200l 50l
+                  SREADLN 200s 50l
                   # Push string into pointer
-                  PUSH @200 @50
+                  PUSH 200s 50l
                   # Move pointer 32 bytes forward
-                  ADD @100 @100 @50
-                  INC @110
-                  CMP @110 @120
+                  ADD 100l 100l 50l
+                  INC 110l
+                  CMP 110l 120l
                   JE 2
                   GOTO 0
 
               print_all:
-                  SET @110 @130
+                  SET 110l 130l
                   # reset cursor
-                  LOCATE @150
-                  DEL @200 @50
-                  PULL @200 @50
-                  SPRINTLN @200
-                  ADD @150 @150 @50
-                  INC @110
-                  CMP @110 @120
+                  LOCATE 150l
+                  DEL 200s 50l
+                  PULL 200s 50l
+                  SPRINTLN 200s
+                  ADD 150l 150l 50l
+                  INC 110l
+                  CMP 110l 120l
                   JE 3
                   GOTO 1
 
               exit:
                   HALT
-
               -----------------------------------------------------------------
 
     PULL:     Pull data from the cursor location to given destination for the

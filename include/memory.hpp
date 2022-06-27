@@ -34,14 +34,12 @@ void free_program(char pid);
 int area_type(unsigned int index);
 int write_area(unsigned int index, char *data);
 int write_area(unsigned int index, char *data, unsigned int size);
-int write_area(unsigned int index, int data);
 int write_area(unsigned int index, double data);
 int write_area(unsigned int index, long data);
 int write_area(unsigned int index, char data);
 int append_area(unsigned int index, char data);
 int read_area_str(unsigned int index, unsigned int size, char *back);
 double read_area_double(unsigned int index);
-int read_area_int(unsigned int index);
 long read_area_long(unsigned int index);
 char read_area_char(unsigned int index);
 

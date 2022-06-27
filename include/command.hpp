@@ -14,14 +14,13 @@
 struct command {
 	char statement; // no need to copy the cmd
 	int variable_index[3];
-	char variable_type[3];
+	short variable_type[3];
 	short arg_count;
 	char pid;
 	bool exception;
 };
 
 double get_double(command c, int index);
-int get_int(command c, int index);
 long get_long(command c, int index);
 void get_string(command c, int index, char *back, unsigned int size);
 char get_byte(command c, int index);

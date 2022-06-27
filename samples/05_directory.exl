@@ -1,31 +1,30 @@
 main:
-DATA @1000 "Directory lister"
-# 1 -- Open Dir
-DATA @1030 1
-# 2 -- Get file information
-DATA @1040 2
-# 3 -- Close Dir
-DATA @1050 3
-# File counter
-DATA @1060 0
-DATA @2000 "."
-SPRINTLN @1000
-SET @20 @2000
-SET @10 @1030
-SYS 1
-SET @1080 @20
-CALL 1
----
+        DATA 1000 "Directory lister"
+        # 1 -- Open Dir
+        DATA 1030 1
+        # 2 -- Get file information
+        DATA 1040 2
+        # 3 -- Close Dir
+        DATA 1050 3
+        # File counter
+        DATA 1060 0
+        DATA 2000 "."
+        SPRINTLN 1000s
+        SET 20s 2000s
+        SET 10l 1030l
+        SYS 1
+        SET 1080l 20l
+        CALL 1
+
 loop_files:
-SET @10 @1040
-SET @20 @1060
-SYS 1
-SPRINTLN @30
-INC @1060
-CMP @1060 @1080
-JE 2
-GOTO 0
----
+        SET 10l 1040l
+        SET 20l 1060l
+        SYS 1
+        SPRINTLN 30s
+        INC 1060l
+        CMP 1060l 1080l
+        JE 2
+        GOTO 0
+
 exit:
-HALT
----
+        HALT

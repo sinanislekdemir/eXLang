@@ -20,7 +20,7 @@ int file_system(program *p) {
 		}
 		_init_fs = true;
 	}
-	int cmd_var = int(read_area_double(DISK_ACCESS_COMMAND_ADDRESS));
+	long cmd_var = read_area_long(DISK_ACCESS_COMMAND_ADDRESS);
 	switch (cmd_var) {
 	case 0: {
 		error_msg("DISK_ACCESS_COMMAND_ADDRESS not defined", p->pid);
@@ -49,7 +49,7 @@ int file_system(program *p) {
 			error_msg("No open directory", p->pid);
 			return -1;
 		}
-		size_t file_index = size_t(read_area_double(DISK_ACCESS_DATA_ADDRESS));
+		size_t file_index = size_t(read_area_long(DISK_ACCESS_DATA_ADDRESS));
 		if (file_index >= _dir.n_files) {
 			error_msg("Index out of bounds", p->pid);
 			return -1;
@@ -61,7 +61,7 @@ int file_system(program *p) {
 			return -1;
 		}
 		free_area(DISK_ACCESS_DATA_ADDRESS, MAX_FILENAME_SIZE + 10);
-		write_area(DISK_ACCESS_DATA_ADDRESS, double(file.is_dir));
+		write_area(DISK_ACCESS_DATA_ADDRESS, long(file.is_dir));
 		write_area(DISK_ACCESS_DATA_ADDRESS + 10, file.name);
 		return 0;
 	}
@@ -88,8 +88,8 @@ int file_system(program *p) {
 			_ex_files[i].size = ftell(_ex_files[i]._fptr);
 			fseek(_ex_files[i]._fptr, 0, SEEK_SET);
 			free_area(DISK_ACCESS_DATA_ADDRESS, MAX_FILENAME_SIZE);
-			write_area(DISK_ACCESS_DATA_ADDRESS, double(i));
-			write_area(DISK_ACCESS_DATA_ADDRESS + 10, double(_ex_files[i].size));
+			write_area(DISK_ACCESS_DATA_ADDRESS, long(i));
+			write_area(DISK_ACCESS_DATA_ADDRESS + 10, long(_ex_files[i].size));
 			return 0;
 		}
 		error_msg("Too many open files", p->pid);
@@ -113,16 +113,16 @@ int file_system(program *p) {
 			_ex_files[i].size = ftell(_ex_files[i]._fptr);
 			fseek(_ex_files[i]._fptr, 0, SEEK_SET);
 			free_area(DISK_ACCESS_DATA_ADDRESS, MAX_FILENAME_SIZE);
-			write_area(DISK_ACCESS_DATA_ADDRESS, double(i));
-			write_area(DISK_ACCESS_DATA_ADDRESS + 10, double(_ex_files[i].size));
+			write_area(DISK_ACCESS_DATA_ADDRESS, long(i));
+			write_area(DISK_ACCESS_DATA_ADDRESS + 10, long(_ex_files[i].size));
 			return 0;
 		}
 		error_msg("Too many open files", p->pid);
 		return -1;
 	}
 	case 6: { // Set cursor
-		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
-		long cloc = long(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
+		int index = int(read_area_long(DISK_ACCESS_DATA_ADDRESS));
+		long cloc = long(read_area_long(DISK_ACCESS_DATA_ADDRESS + 10));
 		if (index < 0 || index >= NUM_FILES) {
 			error_msg("Invalid file index", p->pid);
 			return -1;
@@ -139,8 +139,8 @@ int file_system(program *p) {
 		return 0;
 	}
 	case 7: { // Read
-		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
-		size_t size = size_t(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
+		int index = int(read_area_long(DISK_ACCESS_DATA_ADDRESS));
+		size_t size = size_t(read_area_long(DISK_ACCESS_DATA_ADDRESS + 10));
 		if (index < 0 || index >= NUM_FILES) {
 			error_msg("Invalid file index", p->pid);
 			return -1;
@@ -160,13 +160,13 @@ int file_system(program *p) {
 		char buffer[MAX_LINE_LENGTH] = {0};
 		size_t eof = fread(buffer, size, 1, _ex_files[index]._fptr);
 		free_area(DISK_ACCESS_DATA_ADDRESS, MAX_LINE_LENGTH);
-		write_area(DISK_ACCESS_DATA_ADDRESS, double(eof));
+		write_area(DISK_ACCESS_DATA_ADDRESS, long(eof));
 		write_area(DISK_ACCESS_DATA_ADDRESS + 10, buffer);
 		return 0;
 	}
 	case 8: { // Write
-		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
-		size_t size = size_t(read_area_double(DISK_ACCESS_DATA_ADDRESS + 10));
+		int index = int(read_area_long(DISK_ACCESS_DATA_ADDRESS));
+		size_t size = size_t(read_area_long(DISK_ACCESS_DATA_ADDRESS + 10));
 		if (index < 0 || index >= NUM_FILES) {
 			error_msg("Invalid file index", p->pid);
 			return -1;
@@ -185,11 +185,12 @@ int file_system(program *p) {
 		}
 		char buffer[MAX_LINE_LENGTH] = {0};
 		read_area_str(DISK_ACCESS_DATA_ADDRESS + 20, MAX_LINE_LENGTH, buffer);
+
 		fwrite(buffer, size, 1, _ex_files[index]._fptr);
 		return 0;
 	}
 	case 9: { // Close
-		int index = int(read_area_double(DISK_ACCESS_DATA_ADDRESS));
+		int index = int(read_area_long(DISK_ACCESS_DATA_ADDRESS));
 		if (index < 0 || index >= NUM_FILES) {
 			error_msg("Invalid file index", p->pid);
 			return -1;

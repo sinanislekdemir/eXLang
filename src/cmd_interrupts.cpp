@@ -12,8 +12,8 @@ int command_int(command c, program *p) {
 		return -1;
 	}
 
-	double state = get_double(c, 1);
-	int pin = int(get_double(c, 0));
+	long state = get_long(c, 1);
+	int pin = int(get_long(c, 0));
 	int interrupt_sub = c.variable_index[2];
 
 	if (interrupt_sub == -1) {
