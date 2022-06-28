@@ -76,6 +76,7 @@ program::program() {
 	this->_sleep_duration = 0;
 	this->location = 0;
 	this->pid = 0;
+	this->_has_interrupts = false;
 }
 
 void program::set_pid(long pid) { this->pid = pid; }
@@ -89,6 +90,7 @@ void program::register_interrupt(int pin, int state, char routine) {
 			this->interrupts[i].state = state;
 			this->interrupts[i].routine = routine;
 			this->interrupts[i].triggered = false;
+			this->_has_interrupts = true;
 			break;
 		}
 	}
@@ -333,6 +335,8 @@ int program::compile(char *line) {
 
 int program::check_interrupts() {
 	// Return 1 if it jumps
+	if (!this->_has_interrupts)
+		return 0;
 #ifdef MICRO_DEVICE
 	for (unsigned int i = 0; i < 8; i++) {
 		if (this->interrupts[i].pin == 0) {

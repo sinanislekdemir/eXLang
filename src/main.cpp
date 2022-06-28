@@ -76,6 +76,9 @@ void setup() {
 	Serial.println("ATMEL");
 #endif
 #ifdef BOARD_ESP32
+	while (!Serial.available()) {
+		vTaskDelay(1 / portTICK_PERIOD_MS);
+	}
 	Serial.println("ESP32");
 #endif
 	for (unsigned int index = 0; index < MAX_PROGS; index++) {

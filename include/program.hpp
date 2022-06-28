@@ -48,6 +48,7 @@ class program {
 
 	short _compile_cursor;
 	int _alias_cursor;
+	bool _has_interrupts;
 
 	int parse(const char *cmd, unsigned int pid, int index);
 
@@ -56,6 +57,7 @@ class program {
 	short back_sub_history[PROG_SUBS];
 	short cursor;
 	short subs[PROG_SUBS];
+
 	interrupt interrupts[8];
 
 	bool _sleep;
