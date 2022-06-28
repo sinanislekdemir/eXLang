@@ -1,0 +1,15 @@
+main:
+        DATA 10 "Hello"
+        DATA 30 0x57
+        DATA 31 0x6F
+        DATA 32 0x72
+        DATA 33 0x6C
+        DATA 34 0x64
+
+        APPEND 10s 30c
+        APPEND 10s 31c
+        APPEND 10s 32c
+        APPEND 10s 33c
+        APPEND 10s 34c
+        SPRINTLN 10s
+        HALT

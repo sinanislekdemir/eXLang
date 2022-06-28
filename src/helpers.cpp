@@ -126,7 +126,7 @@ unsigned int arg_loc(const char *arg) {
 	return atoi(tmp);
 }
 
-bool is_address_type(unsigned int t) { return t >= 40 && t <= 42; }
+bool is_address_type(unsigned int t) { return t >= 40 && t <= 43; }
 
 short arg_type(const char *arg) {
 	// return the argument's type
@@ -148,6 +148,8 @@ short arg_type(const char *arg) {
 		return TYPE_ADDRESS_LNG;
 	if (arg[li] == 's')
 		return TYPE_ADDRESS_STR;
+	if (arg[li] == 'c')
+		return TYPE_ADDRESS_CHR;
 
 	bool isnum = true;
 	bool isdbl = false;

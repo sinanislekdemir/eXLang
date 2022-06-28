@@ -42,18 +42,18 @@ int command_set(command c, program *p) {
 
 	if (is_address_type(c.variable_type[1])) {
 		char buffer[MAX_LINE_LENGTH] = {0};
-		char type = area_type(c.variable_index[1]);
-		if (type == TYPE_DBL) {
+		char type = c.variable_type[1];
+		if (type == TYPE_ADDRESS_DBL) {
 			double val = read_area_double(c.variable_index[1]);
 			write_area(c.variable_index[0], val);
 			return 0;
 		}
-		if (type == TYPE_LNG) {
+		if (type == TYPE_ADDRESS_LNG) {
 			long val = read_area_long(c.variable_index[1]);
 			write_area(c.variable_index[0], val);
 			return 0;
 		}
-		if (type == TYPE_BYTE) {
+		if (type == TYPE_ADDRESS_CHR) {
 			char ch = read_area_char(c.variable_index[1]);
 			write_area(c.variable_index[0], ch);
 			return 0;

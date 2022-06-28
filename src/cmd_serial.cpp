@@ -57,20 +57,20 @@ int command_serial_println(command c, program *p) {
 	UNUSED(p);
 	char buffer[MAX_LINE_LENGTH] = {0};
 
-	char type = area_type(c.variable_index[0]);
-	if (type == TYPE_LNG) {
+	char type = c.variable_type[0];
+	if (type == TYPE_ADDRESS_LNG) {
 #ifdef MICRO_DEVICE
 		Serial.println(get_long(c, 0));
 #else
 		printf("%ld\n", get_long(c, 0));
 #endif
-	} else if (type == TYPE_DBL) {
+	} else if (type == TYPE_ADDRESS_DBL) {
 #ifdef MICRO_DEVICE
 		Serial.println(get_double(c, 0));
 #else
 		printf("%f\n", get_double(c, 0));
 #endif
-	} else if (type == TYPE_BYTE) {
+	} else if (type == TYPE_ADDRESS_CHR) {
 #ifdef MICRO_DEVICE
 		Serial.println(int(get_byte(c, 0)));
 #else
@@ -92,20 +92,20 @@ int command_serial_print(command c, program *p) {
 	UNUSED(p);
 	char buffer[MAX_LINE_LENGTH] = {0};
 
-	char type = area_type(c.variable_index[0]);
-	if (type == TYPE_LNG) {
+	char type = c.variable_type[0];
+	if (type == TYPE_ADDRESS_LNG) {
 #ifdef MICRO_DEVICE
 		Serial.print(get_long(c, 0));
 #else
 		printf("%ld", get_long(c, 0));
 #endif
-	} else if (type == TYPE_DBL) {
+	} else if (type == TYPE_ADDRESS_DBL) {
 #ifdef MICRO_DEVICE
 		Serial.print(get_double(c, 0));
 #else
 		printf("%f", get_double(c, 0));
 #endif
-	} else if (type == TYPE_BYTE) {
+	} else if (type == TYPE_ADDRESS_CHR) {
 #ifdef MICRO_DEVICE
 		Serial.print(int(get_byte(c, 0)));
 #else

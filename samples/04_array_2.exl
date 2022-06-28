@@ -1,20 +1,37 @@
 main:
         # Random range
-        DATA @1000 1
-        DATA @1010 100
+        DATA 1000 1
+        DATA 1010 100
         # Pointer start address
-        DATA @1020 10
+        DATA 1020 200
+        DATA 1070 200
         # Data item size in bytes
-        DATA @1030 8
+        DATA 1030 8
         # Loop range
-        DATA @1040 0
-        DATA @1050 20
+        DATA 1040 0
+        DATA 1050 20
+        DATA 1080 0
         CALL 1
 
 generate:
-        RAND @10 @1000 @1010
-        LOCATE @1020
-        PUSH @10 @1030
-        ADD @1020 @1020 @1030
-        INC @1040
-        CMP @1040 @1050
+        RAND 10l 1000l 1010l
+        LOCATE 1020l
+        PUSH 10l 1030l
+        ADD 1020l 1020l 1030l
+        INC 1040l
+        CMP 1040l 1050l
+        JE 2
+        GOTO 0
+
+print:
+        LOCATE 1070l
+        PULL 10l 1030l
+        SPRINTLN 10l
+        ADD 1070l 1070l 1030l
+        INC 1080l
+        CMP 1080l 1050l
+        JE 3
+        GOTO 0
+
+exit:
+        HALT

@@ -56,8 +56,7 @@ DATA TYPES:
 
      NUMBER: By default, numbers are stored as double or long.
 
-     STRING: Strings are simply byte arrays. String areas have a preceeding
-             data type identifier.
+     STRING: Strings are simply byte arrays.
 
 -------------------------------------------------------------------------------
 
@@ -114,10 +113,6 @@ CONSTANTS:
               DATA 100 "Hello world"
 
               Stores "Hello world" starting from byte 100 in memory.
-              Additionally, byte 99 is used for marking the following
-              memory area type as string.
-
-              Therefore, it's better to keep the previous byte free.
 
               -----------------------------------------------------------------
 
@@ -503,6 +498,12 @@ CONSTANTS:
                   DATA 10 128
                   ALLOC 100s 10l
                   HALT
+
+              -----------------------------------------------------------------
+
+    APPEND:   Append data to the end of a given data area.
+
+              APPEND <target> <source>
 
               -----------------------------------------------------------------
 

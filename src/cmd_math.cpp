@@ -8,7 +8,10 @@
 #else
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #endif
+
+bool _seed = false;
 
 int command_inc(command c, program *p) {
 	UNUSED(p);
@@ -36,11 +39,20 @@ int command_rand(command c, program *p) {
 	int from = get_long(c, 1);
 	int to = get_long(c, 2);
 #ifdef MICRO_DEVICE
-	randomSeed(millis());
+	if (!_seed) {
+		randomSeed(millis());
+		_seed = true;
+	}
+
 	long rn = random(from, to);
 #else
-	to += from;
-	long rn = random() % to;
+	if (!_seed) {
+		time_t t;
+		srand((unsigned)time(&t));
+		_seed = true;
+	}
+
+	long rn = random() % (to + 1 - from) + from;
 #endif
 	return write_area(c.variable_index[0], rn);
 }

@@ -31,7 +31,7 @@ struct _protected {
 int store_data(const char *cmd);
 void free_area(unsigned int index, unsigned int size);
 void free_program(char pid);
-int area_type(unsigned int index);
+
 int write_area(unsigned int index, char *data);
 int write_area(unsigned int index, char *data, unsigned int size);
 int write_area(unsigned int index, double data);

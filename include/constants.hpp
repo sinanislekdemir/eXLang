@@ -9,6 +9,7 @@
 #define TYPE_ADDRESS_DBL 40   // f
 #define TYPE_ADDRESS_LNG 41   // l
 #define TYPE_ADDRESS_STR 42   // s
+#define TYPE_ADDRESS_CHR 43   // c
 #define TYPE_LABEL 5
 #define TYPE_REGISTER 6
 #define TYPE_FILE 7
