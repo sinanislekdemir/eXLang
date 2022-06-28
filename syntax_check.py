@@ -94,7 +94,7 @@ def _validate_sys(parts: list[str]) -> bool:
 def _validate_data(parts: list[str]) -> bool:
     if len(parts) < 3:
         return False
-    if get_type(parts[1]) != ADDRESS:
+    if get_type(parts[1]) != NUM:
         return False
     return True
 
@@ -167,7 +167,7 @@ COMMANDS = {
 def get_type(s: str) -> int:
     if s[0] == ":":
         return LABEL
-    if s[0] == "@":
+    if s[-1] in ['l', 's', 'f', 'c']:
         return ADDRESS
     if s[0] == '"':
         return STR
