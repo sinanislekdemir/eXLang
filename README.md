@@ -1,6 +1,10 @@
 # eXLang
 Experimental Esoteric Programming Language that runs on microchips and forward.
 
+## Learning eXLang programming
+
+Checkout [learning.txt](https://github.com/sinanislekdemir/eXLang/blob/main/learning.txt) and [modules.txt](https://github.com/sinanislekdemir/eXLang/blob/main/modules.txt)
+
 ## Main Idea
 
 This language is designed for micro controllers. 
