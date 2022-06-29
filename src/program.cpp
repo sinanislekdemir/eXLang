@@ -15,7 +15,6 @@
 sub _subs[MAX_SUBS] = {};
 extern char _last_err[MAX_LINE_LENGTH];
 extern command commands[MAX_CMDS];
-extern constant _constants[];
 
 int next_sub() {
 	for (unsigned short i = 0; i < MAX_SUBS; i++) {
@@ -265,6 +264,9 @@ int program::step() {
 	}
 	_subs[sub_index].cursor++;
 
+	if (_subs[sub_index].command_count == -1) {
+		_subs[sub_index].command_count = sub_command_count(sub_index);
+	}
 	if (_subs[sub_index].cursor >= (unsigned short)_subs[sub_index].command_count) {
 		this->pop_sub();
 		if (this->cursor == -1) {

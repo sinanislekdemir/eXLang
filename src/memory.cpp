@@ -54,7 +54,12 @@ int store_data(const char *cmd) {
 	default: {
 		for (unsigned int j = 0; j < CONST_COUNT; j++) {
 			if (strcmp(temp_buffer, _constants[j].keyword) == 0) {
-				write_area((unsigned int)(l), _constants[j].val);
+				if (_constants[j].is_double) {
+					write_area((unsigned int)(l), _constants[j].val);
+				} else {
+					write_area((unsigned int)(l), _constants[j].vall);
+				}
+
 				break;
 			}
 		}

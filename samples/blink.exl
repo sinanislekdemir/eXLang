@@ -1,0 +1,16 @@
+main:
+        DATA 10 1000
+        DATA 20 HIGH
+        DATA 30 LOW
+        DATA 40 OUTPUT
+        # Pin 19
+        DATA 50 19
+        PINMODE 50l 40l
+        CALL 1
+loop:
+        DWRITE 50l 20l
+        SLEEP 10l
+        DWRITE 50l 30l
+        SLEEP 10l
+        GOTO 0
+        HALT

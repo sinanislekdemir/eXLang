@@ -6,10 +6,10 @@
 #define TYPE_DBL 2
 #define TYPE_LNG 9
 #define TYPE_CONSTANT 3
-#define TYPE_ADDRESS_DBL 40   // f
-#define TYPE_ADDRESS_LNG 41   // l
-#define TYPE_ADDRESS_STR 42   // s
-#define TYPE_ADDRESS_CHR 43   // c
+#define TYPE_ADDRESS_DBL 40 // f
+#define TYPE_ADDRESS_LNG 41 // l
+#define TYPE_ADDRESS_STR 42 // s
+#define TYPE_ADDRESS_CHR 43 // c
 #define TYPE_LABEL 5
 #define TYPE_REGISTER 6
 #define TYPE_FILE 7
@@ -136,6 +136,8 @@
 struct constant {
 	char keyword[16];
 	double val;
+	long vall;
+	bool is_double;
 };
 
 #endif
