@@ -164,6 +164,10 @@ int main(int argc, char *argv[]) {
 		printf("./exlang <script-filename>\n");
 		return 0;
 	}
+	if (strcmp(argv[1], "--version")) {
+		printf("eXLang 1.0.0\n");
+		return 0;
+	}
 	fstream file;
 	file.open(argv[1], ios::in);
 	if (!file.is_open()) {
