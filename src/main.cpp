@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
 		printf("./exlang <script-filename>\n");
 		return 0;
 	}
-	if (strcmp(argv[1], "--version")) {
+	if (strcmp(argv[1], "--version") == 0) {
 		printf("eXLang 1.0.0\n");
 		return 0;
 	}
@@ -174,6 +174,7 @@ int main(int argc, char *argv[]) {
 		printf("Failed to open file %s\n", argv[1]);
 		return 1;
 	}
+
 	register_statements();
 	prepare_all();
 

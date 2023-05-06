@@ -54,7 +54,6 @@ int command_analogread(command c, program *p) {
 
 #ifdef MICRO_DEVICE
 int command_analogwrite(command c, program *p) {
-	int pin = int(get_long(c, 0));
 	int val = int(get_long(c, 1));
 	if (val > 255) {
 		val = 255;
@@ -63,6 +62,7 @@ int command_analogwrite(command c, program *p) {
 		val = 0;
 	}
 #ifdef BOARD_ESP32
+	int pin = int(get_long(c, 0));
 	int channel = _get_channel(pin);
 	if (channel == -1) {
 		error_msg("No empty channels", c.pid);
