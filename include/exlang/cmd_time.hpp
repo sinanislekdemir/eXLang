@@ -1,7 +1,7 @@
-#ifndef _cmd_time_hpp
-#define _cmd_time_hpp
+#ifndef EXLANG_CMD_TIME_HPP
+#define EXLANG_CMD_TIME_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 int command_sleep(command c, program *p);
 int command_millis(command c, program *p);

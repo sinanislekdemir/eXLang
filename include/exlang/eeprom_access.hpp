@@ -1,5 +1,5 @@
-#ifndef _eeprom_access_hpp
-#define _eeprom_access_hpp
+#ifndef EXLANG_EEPROM_ACCESS_HPP
+#define EXLANG_EEPROM_ACCESS_HPP
 
 #ifdef MICRO_DEVICE
 

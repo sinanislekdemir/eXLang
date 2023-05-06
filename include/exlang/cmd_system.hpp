@@ -1,7 +1,7 @@
-#ifndef _cmd_system_hpp
-#define _cmd_system_hpp
+#ifndef EXLANG_CMD_SYSTEM_HPP
+#define EXLANG_CMD_SYSTEM_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 typedef int (*syscall_function)(program *_p);
 

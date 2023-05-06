@@ -1,7 +1,8 @@
-#include "cmd_logic.hpp"
-#include "helpers.hpp"
-#include "macros.hpp"
-#include "memory.hpp"
+#include "exlang/cmd_logic.hpp"
+#include "exlang/helpers.hpp"
+#include "exlang/macros.hpp"
+#include "exlang/memory.hpp"
+
 #ifdef MICRO_DEVICE
 #include <Arduino.h>
 #else

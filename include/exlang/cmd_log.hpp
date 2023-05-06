@@ -1,7 +1,7 @@
-#ifndef _log_hpp
-#define _log_hpp
+#ifndef EXLANG_CMD_LOG_HPP
+#define EXLANG_CMD_LOG_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 void set_output(int output_type);
 int command_log(command c, program *p);

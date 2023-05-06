@@ -1,4 +1,4 @@
-#include "eeprom_access.hpp"
+#include "exlang/eeprom_access.hpp"
 
 #ifdef MICRO_DEVICE
 int init_eeprom() {

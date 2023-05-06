@@ -1,7 +1,7 @@
-#ifndef _cmd_digital_hpp
-#define _cmd_digital_hpp
+#ifndef EXLANG_CMD_DIGITAL_HPP
+#define EXLANG_CMD_DIGITAL_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 #ifdef MICRO_DEVICE
 int command_pinmode(command c, program *p);

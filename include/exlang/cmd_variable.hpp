@@ -1,7 +1,7 @@
-#ifndef _cmd_variable_hpp
-#define _cmd_variable_hpp
+#ifndef EXLANG_CMD_VARIABLE_HPP
+#define EXLANG_CMD_VARIABLE_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 // Create variable SET <var> <val>
 int command_set(command c, program *p);

@@ -1,7 +1,7 @@
-#ifndef _cmd_navigate_hpp
-#define _cmd_navigate_hpp
+#ifndef EXLANG_CMD_NAVIGATE_HPP
+#define EXLANG_CMD_NAVIGATE_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 int command_call(command c, program *p);
 int command_goto(command c, program *p);

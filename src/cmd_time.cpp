@@ -1,6 +1,6 @@
-#include "cmd_time.hpp"
-#include "helpers.hpp"
-#include "macros.hpp"
+#include "exlang/cmd_time.hpp"
+#include "exlang/helpers.hpp"
+#include "exlang/macros.hpp"
 
 int command_sleep(command c, program *_p) {
 	if (c.arg_count < 1) {

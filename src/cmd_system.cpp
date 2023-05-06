@@ -1,5 +1,5 @@
-#include "cmd_system.hpp"
-#include "macros.hpp"
+#include <exlang/cmd_system.hpp>
+#include <exlang/macros.hpp>
 #ifdef MICRO_DEVICE
 //#include "bluetooth.hpp"
 //#include "display_ssd1306.hpp"
@@ -7,9 +7,9 @@
 //#include "wifi.hpp"
 #include <Arduino.h>
 #else
-#include "disk.hpp"
+#include <exlang/dev_disk.hpp>
 #endif
-#include "helpers.hpp"
+#include <exlang/helpers.hpp>
 
 int command_noop(command c, program *p) {
 	UNUSED(c);

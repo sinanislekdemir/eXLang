@@ -1,5 +1,5 @@
-#include "command.hpp"
-#include "constants.hpp"
+#include "exlang/command.hpp"
+#include "exlang/constants.hpp"
 
 command commands[MAX_CMDS] = {};
 

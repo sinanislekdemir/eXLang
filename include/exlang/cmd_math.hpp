@@ -1,7 +1,7 @@
-#ifndef _cmanager_math_hpp
-#define _cmanager_math_hpp
+#ifndef EXLANG_CMD_MATH_HPP
+#define EXLANG_CMD_MATH_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 int command_inc(command c, program *p);
 int command_num(command c, program *p);

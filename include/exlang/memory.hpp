@@ -1,7 +1,7 @@
-#ifndef _memory_hpp
-#define _memory_hpp
+#ifndef EXLANG_MEMORY_HPP
+#define EXLANG_MEMORY_HPP
 
-#include "constants.hpp"
+#include "exlang/constants.hpp"
 
 #ifndef MAX_MEM
 #define MAX_MEM 1024 // 1024 * 8 in ESP32

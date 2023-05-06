@@ -1,6 +1,6 @@
-#include "disk.hpp"
+#include <exlang/dev_disk.hpp>
 
-#include "memory.hpp"
+#include <exlang/memory.hpp>
 
 #ifndef MICRO_DEVICE
 

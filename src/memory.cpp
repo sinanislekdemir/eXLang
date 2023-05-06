@@ -1,13 +1,7 @@
-/**
-   We are storing variables at global in a linked list.
-   With linked list, we are avoiding memory swaps while
-   extending arrays. Keep the memory requirements at minimum.
-   Also all memory is shared and accessible.
- */
-#include "memory.hpp"
-#include "constants.hpp"
-#include "helpers.hpp"
-#include "macros.hpp"
+#include "exlang/memory.hpp"
+#include "exlang/constants.hpp"
+#include "exlang/helpers.hpp"
+#include "exlang/macros.hpp"
 #ifdef MICRO_DEVICE
 #include <Arduino.h>
 #else

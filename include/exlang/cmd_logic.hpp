@@ -1,7 +1,7 @@
-#ifndef _cmd_logic_hpp
-#define _cmd_logic_hpp
+#ifndef EXLANG_CMD_LOGIC_HPP
+#define EXLANG_CMD_LOGIC_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 int command_je(command c, program *p);	 // Jump if a = b
 int command_jne(command c, program *p); // Jump if a ! b

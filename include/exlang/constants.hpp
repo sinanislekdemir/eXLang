@@ -1,5 +1,5 @@
-#ifndef _constants_hpp
-#define _constants_hpp
+#ifndef EXLANG_CONSTANTS_HPP
+#define EXLANG_CONSTANTS_HPP
 
 #define TYPE_NONE 0
 #define TYPE_STR 1

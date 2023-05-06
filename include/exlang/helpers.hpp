@@ -1,5 +1,5 @@
-#ifndef _helpers_h
-#define _helpers_h
+#ifndef EXLANG_HELPERS_HPP
+#define EXLANG_HELPERS_HPP
 
 long long _millis();
 

@@ -1,5 +1,5 @@
-#ifndef _error_hpp
-#define _error_hpp
+#ifndef EXLANG_ERROR_HPP
+#define EXLANG_ERROR_HPP
 
 struct error {
 	unsigned int code;

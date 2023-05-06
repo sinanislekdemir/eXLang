@@ -1,5 +1,5 @@
-#include "interpreter.hpp"
-#include "statement.hpp"
+#include "exlang/interpreter.hpp"
+#include "exlang/statement.hpp"
 
 extern statement statements[NUM_STATEMENTS];
 extern command commands[MAX_CMDS];

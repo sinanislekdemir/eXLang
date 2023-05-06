@@ -1,8 +1,8 @@
-#include "program.hpp"
-#include "helpers.hpp"
-#include "interpreter.hpp"
-#include "memory.hpp"
-#include "statement.hpp"
+#include "exlang/program.hpp"
+#include "exlang/helpers.hpp"
+#include "exlang/interpreter.hpp"
+#include "exlang/memory.hpp"
+#include "exlang/statement.hpp"
 
 #ifdef MICRO_DEVICE
 #include <Arduino.h>

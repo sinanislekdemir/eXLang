@@ -1,5 +1,5 @@
-#ifndef _modules_network_hpp
-#define _modules_network_hpp
+#ifndef EXLANG_DEV_NETWORK_HPP
+#define EXLANG_DEV_NETWORK_HPP
 
 #define NETWORK_ACCESS_COMMAND_ADDRESS 10
 #define NETWORK_ACCESS_DATA_ADDRESS 20
@@ -18,7 +18,6 @@ struct _network_handle {
 	long bytes_in;
 	long bytes_out;
 };
-
 
 #endif
 #endif

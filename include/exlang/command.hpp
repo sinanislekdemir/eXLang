@@ -1,5 +1,5 @@
-#ifndef _command_hpp
-#define _command_hpp
+#ifndef EXLANG_COMMAND_HPP
+#define EXLANG_COMMAND_HPP
 
 #define VAR_TYPE_NONE 0
 #define VAR_TYPE_NUM 1
@@ -9,7 +9,7 @@
 #define MAX_CMDS 100 // 1000 for ESP32
 #endif
 
-#include "memory.hpp"
+#include "exlang/memory.hpp"
 
 struct command {
 	char statement; // no need to copy the cmd

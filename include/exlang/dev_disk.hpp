@@ -1,15 +1,15 @@
-#ifndef _modules_disk_hpp
-#define _modules_disk_hpp
+#ifndef EXLANG_DEV_DISK_HPP
+#define EXLANG_DEV_DISK_HPP
 
-#include "program.hpp"
+#include <exlang/program.hpp>
 #define DISK_ACCESS_COMMAND_ADDRESS 10
 #define DISK_ACCESS_DATA_ADDRESS 20
 
 #ifdef MICRO_DEVICE
 
 #else
+#include <exlang/tinydir.h>
 #include <stdio.h>
-#include <tinydir.h>
 
 struct _file_handle {
 	FILE *_fptr;

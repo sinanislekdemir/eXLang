@@ -1,5 +1,5 @@
-#ifndef _program_hpp
-#define _program_hpp
+#ifndef EXLANG_PROGRAM_HPP
+#define EXLANG_PROGRAM_HPP
 
 #ifndef MAX_SUB_COMMANDS
 #define MAX_SUB_COMMANDS 36 // 128 in ESP32
@@ -20,8 +20,8 @@
 #define XSTR(x) STR(x)
 #define STR(x) #x
 
-#include "command.hpp"
-#include "constants.hpp"
+#include "exlang/command.hpp"
+#include "exlang/constants.hpp"
 
 void prepare_all();
 

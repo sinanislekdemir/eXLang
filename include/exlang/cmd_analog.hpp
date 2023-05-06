@@ -1,7 +1,7 @@
-#ifndef _cmd_analog_hpp
-#define _cmd_analog_hpp
+#ifndef EXLANG_CMD_ANALOG_HPP
+#define EXLANG_CMD_ANALOG_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 #ifdef MICRO_DEVICE
 int command_analogread(command c, program *p);

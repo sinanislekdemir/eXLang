@@ -1,10 +1,10 @@
-#ifndef _statement_hpp
-#define _statement_hpp
+#ifndef EXLANG_STATEMENT_HPP
+#define EXLANG_STATEMENT_HPP
 #define MAX_COMMAND_LENGTH 10
 #define NUM_STATEMENTS 64
 
-#include "constants.hpp"
-#include "program.hpp"
+#include "exlang/constants.hpp"
+#include "exlang/program.hpp"
 
 typedef int (*statement_function)(command c, program *p);
 

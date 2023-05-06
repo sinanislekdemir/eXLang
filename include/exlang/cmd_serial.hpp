@@ -1,7 +1,7 @@
-#ifndef _serial_hpp
-#define _serial_hpp
+#ifndef EXLANG_CMD_SERIAL_HPP
+#define EXLANG_CMD_SERIAL_HPP
 
-#include "program.hpp"
+#include "exlang/program.hpp"
 
 int command_serial_println(command c, program *p);
 int command_serial_print(command c, program *p);

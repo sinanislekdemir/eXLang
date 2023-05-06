@@ -1,6 +1,6 @@
-#include "cmd_navigate.hpp"
-#include "helpers.hpp"
-#include "macros.hpp"
+#include "exlang/cmd_navigate.hpp"
+#include "exlang/helpers.hpp"
+#include "exlang/macros.hpp"
 
 extern sub _subs[MAX_SUBS];
 
