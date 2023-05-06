@@ -74,6 +74,7 @@ int command_analogwrite(command c, program *p) {
 #endif
 
 #ifdef BOARD_ATMEGA
+	int pin = int(get_long(c, 0));
 	analogWrite(pin, val);
 #endif
 	return 0;
