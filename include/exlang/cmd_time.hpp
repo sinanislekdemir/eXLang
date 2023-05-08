@@ -3,7 +3,9 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 int command_sleep(command c, program *p);
 int command_millis(command c, program *p);
+}; // namespace exlang
 
 #endif

@@ -1,8 +1,9 @@
 #ifndef EXLANG_DEV_NETWORK_HPP
 #define EXLANG_DEV_NETWORK_HPP
 
-#define NETWORK_ACCESS_COMMAND_ADDRESS 10
-#define NETWORK_ACCESS_DATA_ADDRESS 20
+namespace exlang {
+static constexpr int NETWORK_ACCESS_COMMAND_ADDRESS = 10;
+static constexpr int NETWORK_ACCESS_DATA_ADDRESS = 20;
 
 #ifndef MICRO_DEVICE
 #include <netinet/in.h>
@@ -20,4 +21,5 @@ struct _network_handle {
 };
 
 #endif
+}; // namespace exlang
 #endif

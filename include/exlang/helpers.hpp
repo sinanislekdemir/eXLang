@@ -1,6 +1,7 @@
 #ifndef EXLANG_HELPERS_HPP
 #define EXLANG_HELPERS_HPP
 
+namespace exlang {
 long long _millis();
 
 // strtok should do fine but I need to keep "..." intact
@@ -17,4 +18,5 @@ char hex2c(char *hex);
 void ltrim(char *src);
 bool is_data_type(int type);
 int pfree();
+}; // namespace exlang
 #endif

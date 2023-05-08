@@ -1,17 +1,27 @@
-#include "exlang/memory.hpp"
-#include "exlang/constants.hpp"
-#include "exlang/helpers.hpp"
-#include "exlang/macros.hpp"
+#include <exlang/constants.hpp>
+#include <exlang/helpers.hpp>
+#include <exlang/macros.hpp>
+#include <exlang/memory.hpp>
 #ifdef MICRO_DEVICE
 #include <Arduino.h>
 #else
 #include <stdlib.h>
 #include <string.h>
 #endif
+#include <array>
 
-char _memory_area[MAX_MEM] = {0};
-_protected _protected_memory[64] = {0, 0, 0};
-char _last_err[MAX_LINE_LENGTH] = {0};
+/**
+ * Here are some global variables that are explicitly made global.
+ * Before judging the use of globals, please consider that
+ * exlang can run 4 programs in parallel on a tiny
+ * ATMega microcontroller and it's designed with:
+ *   - Least amount of resources
+ *   - Stack based memory management as heap is brittle in microcontrollers in the log run.
+ */
+std::array<char, MAX_MEM> _memory_area;	      // NOLINT
+std::array<char, MAX_LINE_LENGTH> _last_err;  // NOLINT
+std::array<_protected, 64> _protected_memory; // NOLINT
+
 extern constant _constants[];
 
 int store_data(const char *cmd) {

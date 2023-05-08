@@ -3,6 +3,8 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 int run(unsigned short c, program *_p);
+}; // namespace exlang
 
 #endif

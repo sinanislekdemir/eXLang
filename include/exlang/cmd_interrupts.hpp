@@ -3,7 +3,9 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 #ifdef MICRO_DEVICE
 int command_int(command c, program *p);
 #endif
+}; // namespace exlang
 #endif

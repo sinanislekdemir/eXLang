@@ -3,6 +3,7 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 int command_sleep(command *c, program *_p);
-
+}; 
 #endif

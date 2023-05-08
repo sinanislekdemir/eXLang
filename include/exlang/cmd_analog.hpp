@@ -3,10 +3,13 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 #ifdef MICRO_DEVICE
 int command_analogread(command c, program *p);
 int command_analogwrite(command c, program *p);
 int command_analogref(command c, program *p);
 #endif
+
+}; // namespace exlang
 
 #endif

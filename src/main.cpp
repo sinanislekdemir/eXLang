@@ -71,7 +71,6 @@ void setup() {
 	Serial.begin(9600);
 	register_statements();
 	prepare_all();
-	int c = 0;
 #ifdef BOARD_ATMEGA
 	Serial.println("ATMEL");
 #endif

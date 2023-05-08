@@ -3,6 +3,7 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 typedef int (*syscall_function)(program *_p);
 
 struct sys_call {
@@ -14,5 +15,6 @@ struct sys_call {
 int command_core(command c, program *p);
 int command_sys(command c, program *p);
 int command_noop(command c, program *p);
+}; // namespace exlang
 
 #endif

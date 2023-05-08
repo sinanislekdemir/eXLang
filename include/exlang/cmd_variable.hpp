@@ -3,6 +3,7 @@
 
 #include "exlang/program.hpp"
 
+namespace exlang {
 // Create variable SET <var> <val>
 int command_set(command c, program *p);
 // Copy variable CPY <dest> <from> <size> <src>
@@ -21,4 +22,5 @@ int command_append(command c, program *p);
 int command_location(command c, program *p);
 int command_pull(command c, program *p);
 int command_push(command c, program *p);
+}; // namespace exlang
 #endif

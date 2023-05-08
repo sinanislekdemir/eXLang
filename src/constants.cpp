@@ -1,6 +1,7 @@
 #include "exlang/constants.hpp"
+#include <array>
 
-constant _constants[] = {
+std::array<constant, NUM_CONSTANTS> constants = { // NOLINT
     {"HIGH", 0, HIGH, false},
     {"LOW", 0, LOW, false},
     {"RISING", 0, RISING, false},

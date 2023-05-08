@@ -4,15 +4,15 @@
 #include "exlang/constants.hpp"
 
 #ifndef MAX_MEM
-#define MAX_MEM 1024 // 1024 * 8 in ESP32
+#define MAX_MEM 1024 // 1024 * 8 in ESP32 // NOLINT
 #endif
 
 #ifdef BOARD_ATMEGA
-#define BITS 8
+#define BITS 8 // NOLINT
 #elif BOARD_ESP32
-#define BITS 32
+#define BITS 32 // NOLINT
 #else
-#define BITS 8
+#define BITS 8 // NOLINT
 #endif
 
 // jump request
