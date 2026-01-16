@@ -85,15 +85,19 @@ void free_program(char pid) {
 void free_area(unsigned int index, unsigned int size) { memset(_memory_area + index, 0, size); }
 
 int write_area(unsigned int index, char *data) {
-	if (index == 0) {
+	if (index == 0 || index >= MAX_MEM) {
 		return -1;
 	}
-	memcpy(_memory_area + index, data, strlen(data));
+	size_t len = strlen(data);
+	if (index + len > MAX_MEM) {
+		return -1;
+	}
+	memcpy(_memory_area + index, data, len);
 	return 0;
 }
 
 int write_area(unsigned int index, double data) {
-	if (index == 0) {
+	if (index == 0 || index + sizeof(double) > MAX_MEM) {
 		return -1;
 	}
 	memcpy(_memory_area + index, &data, sizeof(double));
@@ -101,7 +105,7 @@ int write_area(unsigned int index, double data) {
 }
 
 int write_area(unsigned int index, long data) {
-	if (index == 0) {
+	if (index == 0 || index + sizeof(long) > MAX_MEM) {
 		return -1;
 	}
 	memcpy(_memory_area + index, &data, sizeof(long));
@@ -109,7 +113,7 @@ int write_area(unsigned int index, long data) {
 }
 
 int write_area(unsigned int index, char data) {
-	if (index == 0) {
+	if (index == 0 || index >= MAX_MEM) {
 		return -1;
 	}
 	_memory_area[index] = data;
@@ -117,7 +121,7 @@ int write_area(unsigned int index, char data) {
 }
 
 int write_area(unsigned int index, char *data, unsigned int size) {
-	if (index == 0) {
+	if (index == 0 || index + size > MAX_MEM) {
 		return -1;
 	}
 	memcpy(_memory_area + index, data, size);
@@ -154,16 +158,27 @@ int read_area_str(unsigned int index, unsigned int size, char *back) {
 }
 
 double read_area_double(unsigned int index) {
+	if (index + sizeof(double) > MAX_MEM) {
+		return 0.0;
+	}
 	double *result = (double *)(_memory_area + index);
 	return *result;
 }
 
 long read_area_long(unsigned int index) {
+	if (index + sizeof(long) > MAX_MEM) {
+		return 0;
+	}
 	long *result = (long *)(_memory_area + index);
 	return *result;
 }
 
-char read_area_char(unsigned int index) { return _memory_area[index]; }
+char read_area_char(unsigned int index) { 
+	if (index >= MAX_MEM) {
+		return 0;
+	}
+	return _memory_area[index]; 
+}
 
 void error_msg(const char *msg, char pid) {
 	UNUSED(pid);

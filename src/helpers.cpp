@@ -183,8 +183,8 @@ double ctod(char *data) {
 char hex2c(char *hex) {
 	char decimal = 0;
 	char base = 1;
-	for (unsigned int i = 3; i >= 2; i--) {
-		if (hex[i] >= 0 && hex[i] <= 9) {
+	for (int i = 3; i >= 2; i--) {
+		if (hex[i] >= '0' && hex[i] <= '9') {
 			decimal += (hex[i] - 48) * base;
 			base *= 16;
 		} else if (hex[i] >= 'A' && hex[i] <= 'F') {

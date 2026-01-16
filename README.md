@@ -54,9 +54,9 @@ python 02_prime.py  169.26s user 43.72s system 100% cpu 3:32.47 total
 
 ## Building
 
-You will need meson and ninja to build exLang.
+You will need CMake and a C++ compiler to build eXLang.
 
-```
+```bash
 make interpreter
 sudo make install
 ```

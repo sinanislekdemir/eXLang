@@ -166,13 +166,13 @@ void prepare_all() {
 }
 
 short program::pop_sub() {
-	short result;
-	for (unsigned int i = PROG_SUBS - 1;; i--) {
+	short result = -1;
+	for (int i = PROG_SUBS - 1; i >= 0; i--) {
 		if (this->back_sub_history[i] != -1) {
 			result = this->back_sub_history[i];
 			this->back_sub_history[i] = -1;
 			this->cursor = result;
-			for (unsigned int j = 15;; j--) {
+			for (int j = 15; j >= 0; j--) {
 				if (_subs[this->subs[this->cursor]].back_history[j] != -1) {
 					int k = _subs[this->subs[this->cursor]].back_history[j];
 					_subs[this->subs[this->cursor]].cursor = k + 1;
@@ -182,7 +182,7 @@ short program::pop_sub() {
 			return result;
 		}
 	}
-	return -1;
+	return result;
 }
 
 void program::append_to_history(unsigned short cursor, unsigned short instruction) {

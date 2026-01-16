@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.5.0)
 project(exlang
         VERSION 0.1.0
         LANGUAGES CXX)
@@ -45,7 +45,7 @@ if (PLATFORMIO)
   add_custom_target(
     build-only
     WORKING_DIRECTORY ${EXLANG_SOURCE_DIR}
-    COMMANd platformio run
+    COMMAND platformio run
   )
 endif()
 
